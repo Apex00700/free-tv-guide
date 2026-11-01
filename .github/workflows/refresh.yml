@@ -1,0 +1,56 @@
+name: Refresh TV guide
+
+on:
+  schedule:
+    - cron: "17 */4 * * *"   # every 4 hours
+  workflow_dispatch:          # "Run workflow" button for manual runs
+
+permissions:
+  contents: write   # monthly keep-alive note
+  pages: write      # publish the files on GitHub Pages
+  id-token: write   # required by GitHub Pages publishing
+  actions: write    # keep-alive: re-enable this workflow
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build channel list and 2-day guide
+        run: python build.py
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
+
+      # Keep-alive 1: tell GitHub this scheduled workflow is in use (resets the 60-day pause clock).
+      - name: Keep-alive (re-enable workflow)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/refresh.yml/enable" || true
+
+      # Keep-alive 2: a tiny commit about once a month counts as repository activity.
+      - name: Keep-alive (monthly note)
+        run: |
+          month=$(date -u +%Y-%m)
+          if [ "$(cat last-refresh-month.txt 2>/dev/null)" != "$month" ]; then
+            echo "$month" > last-refresh-month.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add last-refresh-month.txt
+            git commit -m "Monthly keep-alive $month"
+            git push
+          fi
