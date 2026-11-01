@@ -13,7 +13,7 @@ Extras:
    A channel is hidden after failing 3 runs in a row and comes back automatically after one good run.
    Hidden channels stay in channels.csv and are listed in report.txt with the reason.
 """
-import csv, gzip, io, json, os, re, sys, urllib.request, urllib.error, datetime as dt
+import csv, gzip, io, json, os, re, sys, urllib.request, urllib.error, urllib.parse, datetime as dt
 import concurrent.futures as cf
 from xml.etree.ElementTree import iterparse, tostring
 from xml.sax.saxutils import escape, quoteattr
@@ -79,7 +79,8 @@ def check_stream(c):
     try:
         h = {"User-Agent": c["ua"] or TEST_UA}
         if c["ref"]: h["Referer"] = c["ref"]
-        req = urllib.request.Request(c["url"].strip(), headers=h)
+        url = urllib.parse.quote(c["url"].strip(), safe=":/?&=%#+;,@!$'()*~[]")  # spaces/accents, as players send them
+        req = urllib.request.Request(url, headers=h)
         with urllib.request.urlopen(req, timeout=12) as r:
             body = r.read(4096)
         if b"#EXTM3U" in body[:300] or body[:1] == b"\x47" or b"ftyp" in body[:16]:
