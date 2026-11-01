@@ -1,6 +1,6 @@
 """Rebuild one combined channel list and one 2-day TV guide from free, public sources.
 
-Input : channels.csv  (which channels to keep, and their group)
+Input : channels.csv  (which channels to keep, their channel number and group)
 Output: site/shield-tv.m3u and site/shield-tv-guide.xml.gz
 Runs on GitHub's servers every 4 hours (see .github/workflows/refresh.yml).
 Only public URLs are used. No accounts, keys or passwords.
@@ -75,7 +75,6 @@ def main():
 
     by_service = {}
     for p in picks: by_service.setdefault(p["service"], []).append(p)
-    chno = {"guide": 1, "noguide": 5000}
     entries = []
     for svc, plist in by_service.items():
         pl_url, _, pfx = SOURCES[svc]
@@ -90,21 +89,20 @@ def main():
             c = by_id.get(p["key"]) if p["match"] == "id" else by_name.get(p["key"])
             if not c: continue
             found += 1
-            gid = f'{pfx}.{c["id"]}' if p["group"] != "No Guide" else ""
+            gid = f'{pfx}.{c["id"]}' if p["match"] == "id" and c["id"] else ""
             if gid: guide_ids.setdefault(svc, set()).add(c["id"])
-            entries.append((p["group"] == "No Guide", p["group"], p["name"].lower(), p, c, gid))
+            entries.append((int(p["number"]), p, c, gid))
         report.append(f"{svc}: {found}/{len(plist)} channels found")
 
-    entries.sort(key=lambda e: (e[0], e[1], e[2]))
-    for noguide, group, _, p, c, gid in entries:
-        n = chno["noguide" if noguide else "guide"]; chno["noguide" if noguide else "guide"] += 1
-        lines.append(f'#EXTINF:-1 tvg-id="{q(gid)}" tvg-chno="{n}" tvg-name="{q(p["name"])}" tvg-logo="{q(c["logo"])}" group-title="{q(group)}",{p["name"]}')
+    entries.sort(key=lambda e: e[0])
+    for n, p, c, gid in entries:
+        lines.append(f'#EXTINF:-1 tvg-id="{q(gid)}" tvg-chno="{n}" tvg-name="{q(p["name"])}" tvg-logo="{q(c["logo"])}" group-title="{q(p["group"])}",{p["name"]}')
         if c["ua"]: lines.append(f'#EXTVLCOPT:http-user-agent={c["ua"]}')
         if c["ref"]: lines.append(f'#EXTVLCOPT:http-referrer={c["ref"]}')
         lines.append(c["url"].strip())
     open("site/shield-tv.m3u", "w", encoding="utf-8", newline="\n").write("\n".join(lines) + "\n")
 
-    names = {(e[3]["service"], e[4]["id"]): (e[3]["name"], e[4]["logo"]) for e in entries if e[5]}
+    names = {(e[1]["service"], e[2]["id"]): (e[1]["name"], e[2]["logo"]) for e in entries if e[3]}
     gz = gzip.open("site/shield-tv-guide.xml.gz", "wt", encoding="utf-8", compresslevel=9)
     gz.write('<?xml version="1.0" encoding="UTF-8"?>\n<tv generator-info-name="free-tv-guide">\n')
     for (svc, cid), (nm, logo) in names.items():
