@@ -65,8 +65,9 @@ SOURCES = {  # service: (playlist URL, guide URL or None, id prefix)
     "TCL tv+":          ("https://www.apsattv.com/tcl.m3u", None, "tcl"),
     "FreeLiveSports":   ("https://www.apsattv.com/freelivesports.m3u", None, "fls"),
 }
-# Services whose streams Kodi's add-on player (inputstream.adaptive) gets refused on (HTTP 400),
-# but which play fine in Kodi's built-in player. Tested on the Shield 2026-11-01 (FOX 13 Seattle).
+# Services whose streams inputstream.adaptive gets refused on (HTTP 400) and Kodi's internal demuxer
+# fails on via IPTV Simple, but which play in inputstream.ffmpegdirect (official Kodi add-on, already
+# installed). Tested on the Shield 2026-11-01 with FOX 13 Seattle: picture in ~14 s.
 BUILTIN_PLAYER = {"Local Now"}
 TEST_UA ="Kodi/21.2 (Linux; Android 11) Android/11 Sys_CPU/aarch64 App_Bitness/64 Version/21.2"
 
@@ -146,33 +147,46 @@ def gradient(color):
             small.putpixel((x, y), tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3)))
     return small.resize((CARD_W, CARD_H), Image.BILINEAR)
 
-def make_card(logo_url, color, out_path):
-    """Channel logo centered on its group's gradient. Returns True if the card was written."""
+def colorfulness(img):
+    """0 = white/grey/black only, higher = more color. Looks only at visible pixels."""
     from PIL import Image
-    try:
-        logo = Image.open(io.BytesIO(fetch(logo_url, timeout=20))).convert("RGBA")
-    except Exception:
-        return False
+    small = img.convert("RGBA").resize((48, 48))
+    hsv = small.convert("RGB").convert("HSV").getdata(); alpha = small.getchannel("A").getdata()
+    vals = [s * v / 65025 for (h, s, v), a in zip(hsv, alpha) if a > 128 and v > 40]
+    return sum(vals) / len(vals) if vals else 0.0
+
+def load_logo(url):
+    from PIL import Image
+    try: return Image.open(io.BytesIO(fetch(url, timeout=20))).convert("RGBA")
+    except Exception: return None
+
+def make_card(candidates, color, out_path):
+    """Channel logo centered on its group's gradient. Uses the first logo unless it is white/monochrome
+    and another candidate is clearly more colorful. Returns (written, used_other_logo)."""
+    from PIL import Image
+    first = load_logo(candidates[0]) if candidates else None
+    logo, changed = first, False
+    if first is None or colorfulness(first) < 0.08:
+        best, best_c = first, colorfulness(first) if first else -1
+        for url in candidates[1:4]:
+            alt = load_logo(url)
+            if alt is not None and colorfulness(alt) > max(best_c + 0.10, 0.15):
+                best, best_c = alt, colorfulness(alt)
+        changed = best is not first and best is not None
+        logo = best
+    if logo is None: return False, False
     card = gradient(color)
     box = logo.getchannel("A").getbbox()                  # trim empty transparent border
     if box: logo = logo.crop(box)
-    s = min(CARD_W * 0.70 / logo.width, CARD_H * 0.58 / logo.height)   # fit (also enlarges small logos)
-    logo = logo.resize((max(1, int(logo.width * s)), max(1, int(logo.height * s))), Image.LANCZOS)
+    sc = min(CARD_W * 0.70 / logo.width, CARD_H * 0.58 / logo.height)   # fit (also enlarges small logos)
+    logo = logo.resize((max(1, int(logo.width * sc)), max(1, int(logo.height * sc))), Image.LANCZOS)
     card.paste(logo, ((CARD_W - logo.width) // 2, (CARD_H - logo.height) // 2), logo)
     card.save(out_path, "JPEG", quality=85, optimize=True)
-    return True
+    return True, changed
 
-def make_group_card(name, color, out_path):
-    from PIL import Image, ImageDraw, ImageFont
-    card = gradient(color); d = ImageDraw.Draw(card)
-    font = None
-    for f in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "DejaVuSans-Bold.ttf", "arialbd.ttf"):
-        try: font = ImageFont.truetype(f, 44); break
-        except Exception: pass
-    font = font or ImageFont.load_default(size=44)
-    w = d.textlength(name, font=font)
-    d.text(((CARD_W - w) / 2, CARD_H / 2 - 26), name, font=font, fill=(255, 255, 255))
-    card.save(out_path, "JPEG", quality=88, optimize=True)
+def norm_name(n):
+    n = re.sub(r"\((?:[^)]*)\)|\b(hd|tv|channel|network|us|usa)\b", " ", n.lower())
+    return re.sub(r"[^a-z0-9]+", "", n)
 
 def main():
     picks = list(csv.DictReader(open("channels.csv", encoding="utf-8")))
@@ -188,7 +202,7 @@ def main():
     # ---------- match picks to today's source playlists
     by_service = {}
     for p in picks: by_service.setdefault(p["service"], []).append(p)
-    entries = []
+    entries, alt_logos = [], {}
     for svc, plist in by_service.items():
         pl_url, _, pfx = SOURCES[svc]
         try:
@@ -197,6 +211,8 @@ def main():
             report.append(f"{svc}: playlist download FAILED ({e}); channels skipped"); continue
         by_id = {c["id"]: c for c in live if c["id"]}
         by_name = {c["name"]: c for c in live}
+        for c in live:
+            if c["logo"]: alt_logos.setdefault(norm_name(c["name"]), []).append(c["logo"])
         found = 0
         for p in plist:
             c = by_id.get(p["key"]) if p["match"] == "id" else by_name.get(p["key"])
@@ -236,37 +252,9 @@ def main():
     visible = [e for e in entries if key(e) not in hidden]
     json.dump(health, open("site/health.json", "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
-    # ---------- group-colored logo cards (needs Pillow; falls back to the plain logos)
     style = lambda e: GROUP_STYLE.get(e["p"]["group"], ("#424242", "Entertainment"))
     genre_for = {e["gid"]: style(e)[1] for e in visible}
-    logo_for = {e["gid"]: e["c"]["logo"] for e in visible}
-    cards = 0
-    try:
-        import PIL  # noqa: F401
-        os.makedirs("site/cards", exist_ok=True); os.makedirs("site/groups", exist_ok=True)
-        todo = [e for e in visible if e["c"]["logo"]]
-        with cf.ThreadPoolExecutor(32) as ex:
-            ok = list(ex.map(lambda e: make_card(e["c"]["logo"], style(e)[0], f'site/cards/{e["num"]}.jpg'), todo))
-        for e, good in zip(todo, ok):
-            if good and base:
-                logo_for[e["gid"]] = f'{base}cards/{e["num"]}.jpg'; cards += 1
-        for g, (color, _) in GROUP_STYLE.items():
-            make_group_card(g, color, f'site/groups/{re.sub(r"[^a-z0-9]+", "-", g.lower()).strip("-")}.jpg')
-        report.append(f"Logo cards: {sum(ok)} of {len(todo)} made" + ("" if base else " (local test: not linked)"))
-    except ImportError:
-        report.append("Logo cards: skipped (Pillow not installed); plain logos used")
-
-    # ---------- playlist
-    lines = [f'#EXTM3U url-tvg="{base}shield-tv-guide.xml.gz"']
-    for e in visible:
-        p, c = e["p"], e["c"]
-        grp = f'My Channels;{p["group"]}' if p.get("mychannels") == "yes" else p["group"]
-        lines.append(f'#EXTINF:-1 tvg-id="{q(e["gid"])}" tvg-chno="{e["num"]}" tvg-name="{q(p["name"])}" tvg-logo="{q(logo_for[e["gid"]])}" group-title="{q(grp)}",{p["name"]}')
-        if e["svc"] in BUILTIN_PLAYER: lines.append("#KODIPROP:inputstream=inputstream.ffmpeg")
-        if c["ua"]: lines.append(f'#EXTVLCOPT:http-user-agent={c["ua"]}')
-        if c["ref"]: lines.append(f'#EXTVLCOPT:http-referrer={c["ref"]}')
-        lines.append(c["url"].strip())
-    open("site/shield-tv.m3u", "w", encoding="utf-8", newline="\n").write("\n".join(lines) + "\n")
+    guide_icon = {}
 
     # ---------- guide: real listings first, then fill gaps
     progs = {e["gid"]: [] for e in visible}
@@ -299,9 +287,48 @@ def main():
                         progs[gid].append((a, b, tostring(el, encoding="unicode").strip())); n += 1
                 el.clear()
             elif el.tag == "channel":
+                gid = ids.get(el.get("id")); ic = el.find("icon")
+                if gid and ic is not None and ic.get("src"): guide_icon[gid] = ic.get("src")
                 el.clear()
         real += n
         report.append(f"{svc}: {n} guide entries")
+
+    # ---------- group-colored logo cards (needs Pillow; falls back to the plain logos)
+    logo_for = {e["gid"]: e["c"]["logo"] for e in visible}
+    cards = 0
+    try:
+        import PIL  # noqa: F401
+        os.makedirs("site/cards", exist_ok=True)
+        def cands(e):
+            out = [u for u in [e["c"]["logo"], guide_icon.get(e["gid"])] if u]
+            for key_name in (e["p"]["name"], e["p"].get("original_name", ""), e["c"]["name"]):
+                out += alt_logos.get(norm_name(key_name), []) if key_name else []
+            return list(dict.fromkeys(out))
+        todo = [e for e in visible if cands(e)]
+        with cf.ThreadPoolExecutor(32) as ex:
+            res = list(ex.map(lambda e: make_card(cands(e), style(e)[0], f'site/cards/{e["num"]}.jpg'), todo))
+        for e, (good, _) in zip(todo, res):
+            if good and base:
+                logo_for[e["gid"]] = f'{base}cards/{e["num"]}.jpg'; cards += 1
+        changed = [e["p"]["name"] for e, (good, ch) in zip(todo, res) if good and ch]
+        report.append(f"Logo cards: {sum(g for g, _ in res)} of {len(todo)} made" + ("" if base else " (local test: not linked)"))
+        report.append(f"Full-color logo used instead of a white/monochrome one: {len(changed)} channels"
+                      + (f" (e.g. {', '.join(changed[:12])})" if changed else ""))
+    except ImportError:
+        report.append("Logo cards: skipped (Pillow not installed); plain logos used")
+
+    # ---------- playlist
+    lines = [f'#EXTM3U url-tvg="{base}shield-tv-guide.xml.gz"']
+    for e in visible:
+        p, c = e["p"], e["c"]
+        grp = f'My Channels;{p["group"]}' if p.get("mychannels") == "yes" else p["group"]
+        lines.append(f'#EXTINF:-1 tvg-id="{q(e["gid"])}" tvg-chno="{e["num"]}" tvg-name="{q(p["name"])}" tvg-logo="{q(logo_for[e["gid"]])}" group-title="{q(grp)}",{p["name"]}')
+        if e["svc"] in BUILTIN_PLAYER:
+            lines += ["#KODIPROP:inputstream=inputstream.ffmpegdirect", "#KODIPROP:inputstream.ffmpegdirect.is_realtime_stream=true"]
+        if c["ua"]: lines.append(f'#EXTVLCOPT:http-user-agent={c["ua"]}')
+        if c["ref"]: lines.append(f'#EXTVLCOPT:http-referrer={c["ref"]}')
+        lines.append(c["url"].strip())
+    open("site/shield-tv.m3u", "w", encoding="utf-8", newline="\n").write("\n".join(lines) + "\n")
 
     gz = gzip.open("site/shield-tv-guide.xml.gz", "wt", encoding="utf-8", compresslevel=9)
     gz.write('<?xml version="1.0" encoding="UTF-8"?>\n<tv generator-info-name="free-tv-guide">\n')
@@ -320,11 +347,16 @@ def main():
             t = max(t, b)
         if t < hi: gaps.append((t, hi))
         step = 1 if items else 2
+        card = logo_for[gid] if "/cards/" in (logo_for[gid] or "") else ""
+        card_tag = f"<icon src={quoteattr(card)}/>" if card else ""
         for a, b, xml in items:
-            gz.write(xml + "\n"); with_art += "<icon" in xml
+            has_art = "<icon" in xml; with_art += has_art
+            if not has_art and card_tag:                  # no show picture: use the channel's colored card
+                xml = xml[:xml.rindex("</programme>")] + card_tag + "</programme>"
+            gz.write(xml + "\n")
         for ga, gb in gaps:
             for a, b, title, desc in fillers(ga, gb, f"Live: {nm}", f"Live programming on {nm}.", step):
-                gz.write(f'<programme start="{fmt(a)}" stop="{fmt(b)}" channel={quoteattr(gid)}><title>{escape(title)}</title><desc>{escape(desc)}</desc><category>{escape(genre_for[gid])}</category></programme>\n')
+                gz.write(f'<programme start="{fmt(a)}" stop="{fmt(b)}" channel={quoteattr(gid)}><title>{escape(title)}</title><desc>{escape(desc)}</desc><category>{escape(genre_for[gid])}</category>{card_tag}</programme>\n')
                 fill_count += 1
     gz.write("</tv>\n"); gz.close()
 
