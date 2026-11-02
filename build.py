@@ -19,26 +19,26 @@ from xml.etree.ElementTree import iterparse, tostring, SubElement
 from xml.sax.saxutils import escape, quoteattr
 
 # Per group: card color (logo background) and the genre word given to shows that have none.
-# The genre word drives the TV guide colors in Arctic Fuse 3. No purple/pink (the accent is magenta).
+# The genre word drives the TV guide colors in Arctic Fuse 3. No purple/pink and no blue (the accent is royal blue #0063E5).
 GROUP_STYLE = {
     "All Channels":      ("#263238", "Entertainment"),   # only used for the home-screen group tile
     "My Channels":       ("#B8860B", "News"),
     "Seattle Area":      ("#00897B", "News"),
     "US Local News":     ("#00838F", "News"),
-    "News":              ("#1565C0", "News"),
+    "News":              ("#D84315", "News"),
     "Sports":            ("#2E7D32", "Sports"),
     "Movies":            ("#B71C1C", "Movie"),
     "Drama":             ("#8E3B1F", "Drama"),
     "Crime & Mystery":   ("#37474F", "Crime"),
     "Comedy":            ("#9E9D24", "Comedy"),
     "Classic TV":        ("#6D4C41", "Comedy"),
-    "Reality":           ("#D84315", "Reality"),
+    "Reality":           ("#A1663A", "Reality"),
     "Game Shows":        ("#F57F17", "Game Show"),
     "Entertainment":     ("#455A64", "Entertainment"),
     "Kids & Family":     ("#FF8F00", "Kids"),
     "Science & History": ("#5D4037", "Science"),
     "Food & Travel":     ("#827717", "Food"),
-    "Music":             ("#01579B", "Music"),
+    "Music":             ("#9C6B30", "Music"),
     "Relax":             ("#2E7D6B", "Lifestyle"),
     "Gaming & Anime":    ("#DD2C00", "Entertainment"),
     "Español":           ("#E64A19", "Entertainment"),
@@ -70,6 +70,18 @@ SOURCES = {  # service: (playlist URL, guide URL or None, id prefix)
 # installed). Tested on the Shield 2026-11-01 with FOX 13 Seattle: picture in ~14 s.
 BUILTIN_PLAYER = {"Local Now"}
 TEST_UA ="Kodi/21.2 (Linux; Android 11) Android/11 Sys_CPU/aarch64 App_Bitness/64 Version/21.2"
+
+MAX_URL = 1000   # IPTV Simple cuts stream URLs at ~1024 characters; cut URLs fail (HTTP 400). Tested 2026-11-01.
+
+def shorten_url(url):
+    """Make very long stream URLs fit: drop empty query values, then trailing extras (ad-tracking) until short enough."""
+    url = url.strip()
+    if len(url) <= MAX_URL or "?" not in url: return url
+    base, query = url.split("?", 1)
+    pairs = [p for p in query.split("&") if p and not p.endswith("=")]
+    while pairs and len(base) + 1 + len("&".join(pairs)) > MAX_URL:
+        pairs.pop()
+    return base + ("?" + "&".join(pairs) if pairs else "")
 
 def fetch(url, timeout=120, ua="Mozilla/5.0 (free-tv-guide builder)"):
     req = urllib.request.Request(url, headers={"User-Agent": ua})
@@ -217,6 +229,7 @@ def main():
         for p in plist:
             c = by_id.get(p["key"]) if p["match"] == "id" else by_name.get(p["key"])
             if not c: continue
+            c = dict(c, url=shorten_url(c["url"]))   # long URLs break in IPTV Simple
             found += 1
             num = int(p["number"])
             gid = f'{pfx}.{c["id"]}' if p["match"] == "id" and c["id"] else f"live.{num}"
