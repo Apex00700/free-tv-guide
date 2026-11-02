@@ -1,14 +1,14 @@
 number,group,name,service,match,key,mychannels,original_name
-1,Local News,FOX Local Seattle,Xumo,name,FOX LOCAL Seattle,yes,FOX LOCAL Seattle
-2,Local News,FOX 13 Seattle,Local Now,id,LN_991C9E73-687C-4B95-AD6A-1ED471747562,yes,KCPQ FOX 13 Seattle WA
-3,Local News,KGW 8 Portland,Local Now,id,LN_CA8A62A2-B954-44F0-B9CF-96AB6417F5D7,,KGW NBC News 8 Portland OR
-4,Local News,KHQ 6 Spokane,Local Now,id,LN_3CE98F87-05F3-4C82-95F9-4E4FDFEDD0C7,,KHQ (NBC) News 6 Spokane WA
-5,Local News,KING 5 Seattle,Local Now,id,LN_06ABF5FD-8AFB-444D-9001-C766E5B770B8,yes,KING-TV NBC 5 News Seattle WA
-6,Local News,KIRO 7 Seattle,Pluto TV,id,632b619c8d2a6c0007ff534e,yes,KIRO Seattle
-7,Local News,KNDO 23 Yakima,Local Now,id,LN_D28FD0E9-288B-4D20-A4C6-86E8DF83973E,,KNDO (NBC) News 23 Yakima WA
-8,Local News,KNDU 25 Tri-Cities,Local Now,id,LN_FC1E0DFB-1B6B-4408-8A88-79146078BBA8,,KNDU (NBC) News 25 Richland WA
-9,Local News,KREM 2 Spokane,Local Now,id,LN_763AAEBF-2D51-404D-A308-9F54507CFA75,,KREM CBS 2 News Spokane WA
-10,Local News,KXLY 4 Spokane,Local Now,id,LN_A6CD2156-BD42-4CAC-B530-0C17F406A408,,KXLY Spokane Washington
+1,Seattle Area,FOX Local Seattle,Xumo,name,FOX LOCAL Seattle,yes,FOX LOCAL Seattle
+2,Seattle Area,FOX 13 Seattle,Local Now,id,LN_991C9E73-687C-4B95-AD6A-1ED471747562,yes,KCPQ FOX 13 Seattle WA
+3,Seattle Area,KGW 8 Portland,Local Now,id,LN_CA8A62A2-B954-44F0-B9CF-96AB6417F5D7,,KGW NBC News 8 Portland OR
+4,Seattle Area,KHQ 6 Spokane,Local Now,id,LN_3CE98F87-05F3-4C82-95F9-4E4FDFEDD0C7,,KHQ (NBC) News 6 Spokane WA
+5,Seattle Area,KING 5 Seattle,Local Now,id,LN_06ABF5FD-8AFB-444D-9001-C766E5B770B8,yes,KING-TV NBC 5 News Seattle WA
+6,Seattle Area,KIRO 7 Seattle,Pluto TV,id,632b619c8d2a6c0007ff534e,yes,KIRO Seattle
+7,Seattle Area,KNDO 23 Yakima,Local Now,id,LN_D28FD0E9-288B-4D20-A4C6-86E8DF83973E,,KNDO (NBC) News 23 Yakima WA
+8,Seattle Area,KNDU 25 Tri-Cities,Local Now,id,LN_FC1E0DFB-1B6B-4408-8A88-79146078BBA8,,KNDU (NBC) News 25 Richland WA
+9,Seattle Area,KREM 2 Spokane,Local Now,id,LN_763AAEBF-2D51-404D-A308-9F54507CFA75,,KREM CBS 2 News Spokane WA
+10,Seattle Area,KXLY 4 Spokane,Local Now,id,LN_A6CD2156-BD42-4CAC-B530-0C17F406A408,,KXLY Spokane Washington
 100,News,60 Minutes,Local Now,id,LN_324D86DB-0F5E-4035-A08B-80897A293C0D,,60 Minutes
 101,News,ABC News Live,Xumo,id,99951517,yes,ABC News Live
 102,News,AccuWeather NOW,Xumo,id,99991649,,AccuWeather NOW
@@ -1324,16 +1324,16 @@ number,group,name,service,match,key,mychannels,original_name
 2611,US Local News,WGAL Very Lancaster 8,Tubi,id,603917,,WGAL Very Lancaster 8
 2612,US Local News,WMAR 2 Baltimore,Tubi,id,692074,,WMAR 2 Baltimore
 2613,US Local News,WUSA DC/MD/VA 9,Tubi,id,610471,,WUSA DC/MD/VA 9
-2700,Other,AddictaTV,Plex,id,6a1610bebdf296985fd95603-69d6d88b1790acff6189dea5,,AddictaTV
-2701,Other,AfroLandTV,Plex,id,6a1610bebdf296985fd95603-60e737a4ebef9d002c4d0a0c,,AfroLandTV
-2702,Other,Aliwko,Plex,id,6a1610bebdf296985fd95603-64d4ee537b323f6abbd19e59,,Aliwko
-2703,Other,Amasian TV,Plex,id,6a1610bebdf296985fd95603-6838eb6a38304666c89d4e3d,,Amasian TV
-2704,Other,FEVA TV,Plex,id,6a1610bebdf296985fd95603-6a023b768c3c8db908ecaee4,,FEVA TV
-2705,Other,Jubao,Plex,id,6a1610bebdf296985fd95603-639baa971a12420ff66ae7b1,,Jubao
-2706,Other,More U,Plex,id,6a1610bebdf296985fd95603-6112a9139894c8002c6cb87f,,More U
-2707,Other,QVC2,Roku Channel,id,9cb058af15a0fdacf5aa87b78b2e3d33,,QVC2
-2708,Other,Spark TV Light & Love,Plex,id,6a1610bebdf296985fd95603-614a11bfa6f839154ee3306d,,Spark TV Light & Love
-2709,Other,Wonder,Plex,id,6a1610bebdf296985fd95603-5f74cf83ffbe690040689f4d,,Wonder
+2700,More Channels,AddictaTV,Plex,id,6a1610bebdf296985fd95603-69d6d88b1790acff6189dea5,,AddictaTV
+2701,More Channels,AfroLandTV,Plex,id,6a1610bebdf296985fd95603-60e737a4ebef9d002c4d0a0c,,AfroLandTV
+2702,More Channels,Aliwko,Plex,id,6a1610bebdf296985fd95603-64d4ee537b323f6abbd19e59,,Aliwko
+2703,More Channels,Amasian TV,Plex,id,6a1610bebdf296985fd95603-6838eb6a38304666c89d4e3d,,Amasian TV
+2704,More Channels,FEVA TV,Plex,id,6a1610bebdf296985fd95603-6a023b768c3c8db908ecaee4,,FEVA TV
+2705,More Channels,Jubao,Plex,id,6a1610bebdf296985fd95603-639baa971a12420ff66ae7b1,,Jubao
+2706,More Channels,More U,Plex,id,6a1610bebdf296985fd95603-6112a9139894c8002c6cb87f,,More U
+2707,More Channels,QVC2,Roku Channel,id,9cb058af15a0fdacf5aa87b78b2e3d33,,QVC2
+2708,More Channels,Spark TV Light & Love,Plex,id,6a1610bebdf296985fd95603-614a11bfa6f839154ee3306d,,Spark TV Light & Love
+2709,More Channels,Wonder,Plex,id,6a1610bebdf296985fd95603-5f74cf83ffbe690040689f4d,,Wonder
 5000,More Channels,12 News KWCH Wichita,Vizio WatchFree+,name,12 News KWCH Wichita,,12 News KWCH Wichita
 5001,More Channels,12 On Your Side Richmond,Vizio WatchFree+,name,12 On Your Side Richmond,,12 On Your Side Richmond
 5002,More Channels,13 Action News,Vizio WatchFree+,name,13 Action News,,13 Action News

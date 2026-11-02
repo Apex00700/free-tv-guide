@@ -15,8 +15,36 @@ Extras:
 """
 import csv, gzip, io, json, os, re, sys, urllib.request, urllib.error, urllib.parse, datetime as dt
 import concurrent.futures as cf
-from xml.etree.ElementTree import iterparse, tostring
+from xml.etree.ElementTree import iterparse, tostring, SubElement
 from xml.sax.saxutils import escape, quoteattr
+
+# Per group: card color (logo background) and the genre word given to shows that have none.
+# The genre word drives the TV guide colors in Arctic Fuse 3. No purple/pink (the accent is magenta).
+GROUP_STYLE = {
+    "All Channels":      ("#263238", "Entertainment"),   # only used for the home-screen group tile
+    "My Channels":       ("#B8860B", "News"),
+    "Seattle Area":      ("#00897B", "News"),
+    "US Local News":     ("#00838F", "News"),
+    "News":              ("#1565C0", "News"),
+    "Sports":            ("#2E7D32", "Sports"),
+    "Movies":            ("#B71C1C", "Movie"),
+    "Drama":             ("#8E3B1F", "Drama"),
+    "Crime & Mystery":   ("#37474F", "Crime"),
+    "Comedy":            ("#9E9D24", "Comedy"),
+    "Classic TV":        ("#6D4C41", "Comedy"),
+    "Reality":           ("#D84315", "Reality"),
+    "Game Shows":        ("#F57F17", "Game Show"),
+    "Entertainment":     ("#455A64", "Entertainment"),
+    "Kids & Family":     ("#FF8F00", "Kids"),
+    "Science & History": ("#5D4037", "Science"),
+    "Food & Travel":     ("#827717", "Food"),
+    "Music":             ("#01579B", "Music"),
+    "Relax":             ("#2E7D6B", "Lifestyle"),
+    "Gaming & Anime":    ("#DD2C00", "Entertainment"),
+    "Español":           ("#E64A19", "Entertainment"),
+    "More Channels":     ("#424242", "Entertainment"),
+}
+CARD_W, CARD_H = 480, 270   # small 16:9 cards keep Kodi's image cache light
 
 DAYS = 2
 HIDE_AFTER = 3            # consecutive failed runs before a channel is hidden
@@ -37,7 +65,10 @@ SOURCES = {  # service: (playlist URL, guide URL or None, id prefix)
     "TCL tv+":          ("https://www.apsattv.com/tcl.m3u", None, "tcl"),
     "FreeLiveSports":   ("https://www.apsattv.com/freelivesports.m3u", None, "fls"),
 }
-TEST_UA = "Kodi/21.2 (Linux; Android 11) Android/11 Sys_CPU/aarch64 App_Bitness/64 Version/21.2"
+# Services whose streams Kodi's add-on player (inputstream.adaptive) gets refused on (HTTP 400),
+# but which play fine in Kodi's built-in player. Tested on the Shield 2026-11-01 (FOX 13 Seattle).
+BUILTIN_PLAYER = {"Local Now"}
+TEST_UA ="Kodi/21.2 (Linux; Android 11) Android/11 Sys_CPU/aarch64 App_Bitness/64 Version/21.2"
 
 def fetch(url, timeout=120, ua="Mozilla/5.0 (free-tv-guide builder)"):
     req = urllib.request.Request(url, headers={"User-Agent": ua})
@@ -102,6 +133,47 @@ def fillers(start, end, title, desc, step_hours=1):
         t = nxt
     return out
 
+def hex_rgb(h): return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
+
+def gradient(color):
+    """Static diagonal gradient: group color at top-left fading to a dark shade at bottom-right."""
+    from PIL import Image
+    a = hex_rgb(color); b = tuple(int(v * 0.30) for v in a)
+    small = Image.new("RGB", (32, 18))
+    for y in range(18):
+        for x in range(32):
+            t = (x / 31 * 0.6 + y / 17 * 0.4)
+            small.putpixel((x, y), tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3)))
+    return small.resize((CARD_W, CARD_H), Image.BILINEAR)
+
+def make_card(logo_url, color, out_path):
+    """Channel logo centered on its group's gradient. Returns True if the card was written."""
+    from PIL import Image
+    try:
+        logo = Image.open(io.BytesIO(fetch(logo_url, timeout=20))).convert("RGBA")
+    except Exception:
+        return False
+    card = gradient(color)
+    box = logo.getchannel("A").getbbox()                  # trim empty transparent border
+    if box: logo = logo.crop(box)
+    s = min(CARD_W * 0.70 / logo.width, CARD_H * 0.58 / logo.height)   # fit (also enlarges small logos)
+    logo = logo.resize((max(1, int(logo.width * s)), max(1, int(logo.height * s))), Image.LANCZOS)
+    card.paste(logo, ((CARD_W - logo.width) // 2, (CARD_H - logo.height) // 2), logo)
+    card.save(out_path, "JPEG", quality=85, optimize=True)
+    return True
+
+def make_group_card(name, color, out_path):
+    from PIL import Image, ImageDraw, ImageFont
+    card = gradient(color); d = ImageDraw.Draw(card)
+    font = None
+    for f in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "DejaVuSans-Bold.ttf", "arialbd.ttf"):
+        try: font = ImageFont.truetype(f, 44); break
+        except Exception: pass
+    font = font or ImageFont.load_default(size=44)
+    w = d.textlength(name, font=font)
+    d.text(((CARD_W - w) / 2, CARD_H / 2 - 26), name, font=font, fill=(255, 255, 255))
+    card.save(out_path, "JPEG", quality=88, optimize=True)
+
 def main():
     picks = list(csv.DictReader(open("channels.csv", encoding="utf-8")))
     repo = os.environ.get("GITHUB_REPOSITORY", "")
@@ -164,12 +236,33 @@ def main():
     visible = [e for e in entries if key(e) not in hidden]
     json.dump(health, open("site/health.json", "w", encoding="utf-8"), indent=1, ensure_ascii=False)
 
+    # ---------- group-colored logo cards (needs Pillow; falls back to the plain logos)
+    style = lambda e: GROUP_STYLE.get(e["p"]["group"], ("#424242", "Entertainment"))
+    genre_for = {e["gid"]: style(e)[1] for e in visible}
+    logo_for = {e["gid"]: e["c"]["logo"] for e in visible}
+    cards = 0
+    try:
+        import PIL  # noqa: F401
+        os.makedirs("site/cards", exist_ok=True); os.makedirs("site/groups", exist_ok=True)
+        todo = [e for e in visible if e["c"]["logo"]]
+        with cf.ThreadPoolExecutor(32) as ex:
+            ok = list(ex.map(lambda e: make_card(e["c"]["logo"], style(e)[0], f'site/cards/{e["num"]}.jpg'), todo))
+        for e, good in zip(todo, ok):
+            if good and base:
+                logo_for[e["gid"]] = f'{base}cards/{e["num"]}.jpg'; cards += 1
+        for g, (color, _) in GROUP_STYLE.items():
+            make_group_card(g, color, f'site/groups/{re.sub(r"[^a-z0-9]+", "-", g.lower()).strip("-")}.jpg')
+        report.append(f"Logo cards: {sum(ok)} of {len(todo)} made" + ("" if base else " (local test: not linked)"))
+    except ImportError:
+        report.append("Logo cards: skipped (Pillow not installed); plain logos used")
+
     # ---------- playlist
     lines = [f'#EXTM3U url-tvg="{base}shield-tv-guide.xml.gz"']
     for e in visible:
         p, c = e["p"], e["c"]
         grp = f'My Channels;{p["group"]}' if p.get("mychannels") == "yes" else p["group"]
-        lines.append(f'#EXTINF:-1 tvg-id="{q(e["gid"])}" tvg-chno="{e["num"]}" tvg-name="{q(p["name"])}" tvg-logo="{q(c["logo"])}" group-title="{q(grp)}",{p["name"]}')
+        lines.append(f'#EXTINF:-1 tvg-id="{q(e["gid"])}" tvg-chno="{e["num"]}" tvg-name="{q(p["name"])}" tvg-logo="{q(logo_for[e["gid"]])}" group-title="{q(grp)}",{p["name"]}')
+        if e["svc"] in BUILTIN_PLAYER: lines.append("#KODIPROP:inputstream=inputstream.ffmpeg")
         if c["ua"]: lines.append(f'#EXTVLCOPT:http-user-agent={c["ua"]}')
         if c["ref"]: lines.append(f'#EXTVLCOPT:http-referrer={c["ref"]}')
         lines.append(c["url"].strip())
@@ -196,8 +289,13 @@ def main():
                 if gid:
                     try: a, b = parse_time(el.get("start")), parse_time(el.get("stop"))
                     except Exception: a = b = None
-                    if a and b > lo and a < hi:
+                    title = (el.findtext("title") or "").strip()
+                    if a and b > lo and a < hi and title and not title.startswith("NOT_PUBLISHED"):
                         el.set("channel", gid); el.tail = None
+                        for d in el.findall("date"):          # some feeds send 1970-01-01 as "unknown" (shows as 12/31/1969)
+                            if (d.text or "0")[:4] < "1971": el.remove(d)
+                        if el.find("category") is None:        # gives the guide its genre color
+                            SubElement(el, "category").text = genre_for[gid]
                         progs[gid].append((a, b, tostring(el, encoding="unicode").strip())); n += 1
                 el.clear()
             elif el.tag == "channel":
@@ -208,10 +306,10 @@ def main():
     gz = gzip.open("site/shield-tv-guide.xml.gz", "wt", encoding="utf-8", compresslevel=9)
     gz.write('<?xml version="1.0" encoding="UTF-8"?>\n<tv generator-info-name="free-tv-guide">\n')
     for e in visible:
-        logo = e["c"]["logo"]
+        logo = logo_for[e["gid"]]
         gz.write(f'<channel id={quoteattr(e["gid"])}><display-name>{escape(e["p"]["name"])}</display-name>'
                  + (f"<icon src={quoteattr(logo)}/>" if logo else "") + "</channel>\n")
-    fill_count, with_real_now = 0, 0
+    fill_count, with_real_now, with_art = 0, 0, 0
     for e in visible:
         gid, nm = e["gid"], e["p"]["name"]
         items = sorted(progs.get(gid, []), key=lambda x: x[0])
@@ -223,10 +321,10 @@ def main():
         if t < hi: gaps.append((t, hi))
         step = 1 if items else 2
         for a, b, xml in items:
-            gz.write(xml + "\n")
+            gz.write(xml + "\n"); with_art += "<icon" in xml
         for ga, gb in gaps:
             for a, b, title, desc in fillers(ga, gb, f"Live: {nm}", f"Live programming on {nm}.", step):
-                gz.write(f'<programme start="{fmt(a)}" stop="{fmt(b)}" channel={quoteattr(gid)}><title>{escape(title)}</title><desc>{escape(desc)}</desc></programme>\n')
+                gz.write(f'<programme start="{fmt(a)}" stop="{fmt(b)}" channel={quoteattr(gid)}><title>{escape(title)}</title><desc>{escape(desc)}</desc><category>{escape(genre_for[gid])}</category></programme>\n')
                 fill_count += 1
     gz.write("</tv>\n"); gz.close()
 
@@ -234,6 +332,7 @@ def main():
     guide_src = [e for e in visible if e["src_id"]]
     report.append(f"Guide: {real} real listings + {fill_count} 'Live:' fill-in blocks; "
                   f"{with_real_now} of {len(guide_src)} channels with a guide source have a real listing on now")
+    report.append(f"Program artwork: {with_art} of {real} real listings have an image ({100 * with_art // max(real, 1)}%)")
     report.append(f"Stream check: {len(to_test)} tested, {failed_now} failed this run"
                   + (" (too many failures, treated as a network problem: nothing newly hidden)" if trouble else "")
                   + "; Plex not tested")
