@@ -44,7 +44,13 @@ GROUP_STYLE = {
     "Español":           ("#E64A19", "Entertainment"),
     "More Channels":     ("#424242", "Entertainment"),
 }
-CARD_W, CARD_H = 480, 270   # small 16:9 cards keep Kodi's image cache light
+# Pictures stored on the Shield itself (personal use; the images are never on GitHub — only these paths are).
+# Made by tools/make_local_logos.py and tools/make_backdrops.py on the PC.
+SHIELD_MEDIA = "special://profile/media/"
+BACKDROPS = {"seattle-area": 4, "us-local-news": 3, "news": 3, "sports": 3, "movies": 3, "drama": 2, "crime-mystery": 3,
+             "comedy": 2, "classic-tv": 1, "reality": 2, "game-shows": 2, "entertainment": 3, "kids-family": 2,
+             "science-history": 3, "food-travel": 2, "music": 3, "relax": 3, "gaming-anime": 3, "more-channels": 2}
+CARD_W, CARD_H = 1280, 720  # 720p cards: sharp when shown as the big background on a 4K TV
 
 DAYS = 2
 HIDE_AFTER = 3            # consecutive failed runs before a channel is hidden
@@ -326,6 +332,10 @@ def main():
                 logo_for[e["gid"]] = f'{base}cards/{e["num"]}.jpg'; cards += 1
         changed = [e["p"]["name"] for e, (good, ch) in zip(todo, res) if good and ch]
         report.append(f"Logo cards: {sum(g for g, _ in res)} of {len(todo)} made" + ("" if base else " (local test: not linked)"))
+        local = {l.strip() for l in open("logos_local.txt", encoding="utf-8") if l.strip() and not l.startswith("#")} if os.path.exists("logos_local.txt") else set()
+        for e in visible:
+            if str(e["num"]) in local: logo_for[e["gid"]] = f'{SHIELD_MEDIA}apex-logos/{e["num"]}.jpg'
+        report.append(f"High-res logo cards stored on the Shield: {sum(1 for e in visible if str(e['num']) in local)} channels")
         report.append(f"Full-color logo used instead of a white/monochrome one: {len(changed)} channels"
                       + (f" (e.g. {', '.join(changed[:12])})" if changed else ""))
     except ImportError:
@@ -343,6 +353,23 @@ def main():
         if c["ref"]: lines.append(f'#EXTVLCOPT:http-referrer={c["ref"]}')
         lines.append(c["url"].strip())
     open("site/shield-tv.m3u", "w", encoding="utf-8", newline="\n").write("\n".join(lines) + "\n")
+
+    # Pluto sends 900x900 square "tile" pictures; most series also have a 1920x1080 widescreen "featuredImage".
+    # Use it when it exists (checked once per series), so the 4K TV's big background isn't a stretched square.
+    pluto_re = re.compile(r'https://images\.pluto\.tv/series/([0-9a-f]{24})/[^"]+')
+    sids = {m.group(1) for items in progs.values() for _, _, x in items for m in pluto_re.finditer(x)}
+    PLUTO_PLACEHOLDER = "4c39c83e568a723a1da327b6640835a2"   # md5 of Pluto's generic "pluto tv" picture (sent when a series has no widescreen art)
+    def has_wide(sid):
+        import hashlib
+        try:
+            req = urllib.request.Request(f"https://images.pluto.tv/series/{sid}/featuredImage.jpg?w=64&h=36", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=15) as r: return hashlib.md5(r.read()).hexdigest() != PLUTO_PLACEHOLDER
+        except Exception: return False
+    with cf.ThreadPoolExecutor(32) as ex:
+        wide = {s for s, ok in zip(sids, ex.map(has_wide, list(sids))) if ok}
+    def to_wide(m):
+        return f"https://images.pluto.tv/series/{m.group(1)}/featuredImage.jpg?fm=jpg&amp;q=80&amp;w=1920&amp;h=1080" if m.group(1) in wide else m.group(0)
+    report.append(f"Pluto widescreen 1080p pictures: {len(wide)} of {len(sids)} series")
 
     gz = gzip.open("site/shield-tv-guide.xml.gz", "wt", encoding="utf-8", compresslevel=9)
     gz.write('<?xml version="1.0" encoding="UTF-8"?>\n<tv generator-info-name="free-tv-guide">\n')
@@ -362,15 +389,24 @@ def main():
         if t < hi: gaps.append((t, hi))
         step = 1 if items else 2
         card = logo_for[gid] if "/cards/" in (logo_for[gid] or "") else ""
-        card_tag = f"<icon src={quoteattr(card)}/>" if card else ""
+        slug = re.sub(r"[^a-z0-9]+", "-", e["p"]["group"].lower()).strip("-")
+        def no_art_tag(start):
+            """Picture for a show that has none: the group's themed backdrop stored on the Shield (rotates hourly),
+            else the channel's colored card. Apex TV shows the channel's logo on the tile in that case."""
+            if slug in BACKDROPS:
+                k = (int(start.timestamp() // 3600) + e["num"]) % BACKDROPS[slug]
+                return f'<icon src="{SHIELD_MEDIA}apex-backdrops/{slug}/{k}.jpg"/>'
+            return f"<icon src={quoteattr(card)}/>" if card else ""
         for a, b, xml in items:
             has_art = "<icon" in xml; with_art += has_art
-            if not has_art and card_tag:                  # no show picture: use the channel's colored card
-                xml = xml[:xml.rindex("</programme>")] + card_tag + "</programme>"
+            if "images.pluto.tv/series/" in xml: xml = pluto_re.sub(to_wide, xml)
+            if not has_art:
+                tag = no_art_tag(a)
+                if tag: xml = xml[:xml.rindex("</programme>")] + tag + "</programme>"
             gz.write(xml + "\n")
         for ga, gb in gaps:
             for a, b, title, desc in fillers(ga, gb, f"Live: {nm}", f"Live programming on {nm}.", step):
-                gz.write(f'<programme start="{fmt(a)}" stop="{fmt(b)}" channel={quoteattr(gid)}><title>{escape(title)}</title><desc>{escape(desc)}</desc><category>{escape(genre_for[gid])}</category>{card_tag}</programme>\n')
+                gz.write(f'<programme start="{fmt(a)}" stop="{fmt(b)}" channel={quoteattr(gid)}><title>{escape(title)}</title><desc>{escape(desc)}</desc><category>{escape(genre_for[gid])}</category>{no_art_tag(a)}</programme>\n')
                 fill_count += 1
     gz.write("</tv>\n"); gz.close()
 
