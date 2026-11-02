@@ -201,7 +201,8 @@ def norm_name(n):
     return re.sub(r"[^a-z0-9]+", "", n)
 
 def main():
-    picks = list(csv.DictReader(open("channels.csv", encoding="utf-8")))
+    all_rows = list(csv.DictReader(open("channels.csv", encoding="utf-8")))
+    picks = [r for r in all_rows if (r.get("include") or "yes").strip().lower() != "no"]   # include=no: kept in the CSV, left out of playlist + guide
     repo = os.environ.get("GITHUB_REPOSITORY", "")
     owner, _, name = repo.partition("/")
     base = f"https://{owner.lower()}.github.io/{name}/" if repo else ""
@@ -381,7 +382,7 @@ def main():
     report.append(f"Stream check: {len(to_test)} tested, {failed_now} failed this run"
                   + (" (too many failures, treated as a network problem: nothing newly hidden)" if trouble else "")
                   + "; Plex not tested")
-    report.append(f"TOTAL channels: {len(visible)} shown, {len(hidden)} hidden, built {now:%Y-%m-%d %H:%M} UTC")
+    report.append(f"TOTAL channels: {len(visible)} shown, {len(hidden)} hidden, {len(all_rows) - len(picks)} excluded in channels.csv, built {now:%Y-%m-%d %H:%M} UTC")
     if hidden:
         report.append("HIDDEN (failed %d runs in a row; they come back automatically once they play again):" % HIDE_AFTER)
         for k in sorted(hidden, key=lambda k: health[k]["number"]):
