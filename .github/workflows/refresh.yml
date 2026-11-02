@@ -27,6 +27,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install image library (for the colored logo cards; runs on GitHub, not on the Shield)
+        run: pip install pillow==11.3.0
+
       - name: Build channel list and 2-day guide
         run: python build.py
 
