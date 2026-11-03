@@ -1,7 +1,7 @@
 """Rebuild one combined channel list and one 2-day TV guide from free, public sources.
 
 Input : channels.csv  (channel number, group, display name, source match key, My Channels flag)
-Output: site/shield-tv.m3u, site/shield-tv-guide.xml.gz, site/report.txt, site/health.json
+Output: site/shield-tv.m3u, site/shield-tv-guide.xml.gz, site/report.txt, site/health.json, site/artsizes.json
 Runs on GitHub's servers every 2 hours (see .github/workflows/refresh.yml).
 Only public URLs are used. No accounts, keys or passwords.
 
@@ -178,9 +178,32 @@ def load_logo(url):
     try: return Image.open(io.BytesIO(fetch(url, timeout=20))).convert("RGBA")
     except Exception: return None
 
-def make_card(candidates, color, out_path):
+def name_card(name, color, out_path):
+    """For channels whose feed has no logo (or a broken one): the channel name in white (stroked = bold look) on the group's
+    gradient, so no tile is ever blank. Uses Pillow's built-in font (no font files needed)."""
+    from PIL import ImageDraw, ImageFont
+    card = gradient(color); d = ImageDraw.Draw(card)
+    words = name.replace(".US", "").split()
+    for size in (120, 104, 90, 78, 66, 56):
+        font = ImageFont.load_default(size=size); lines, cur = [], ""
+        for w in words:
+            t = (cur + " " + w).strip()
+            if d.textlength(t, font=font) <= CARD_W * 0.80 or not cur: cur = t
+            else: lines.append(cur); cur = w
+        lines.append(cur)
+        if len(lines) <= 3 and max(d.textlength(l, font=font) for l in lines) <= CARD_W * 0.84: break
+    lh = int(size * 1.18); y = (CARD_H - lh * len(lines)) // 2
+    for l in lines:
+        x = (CARD_W - d.textlength(l, font=font)) // 2
+        d.text((x + 3, y + 4), l, font=font, fill=(0, 0, 0))          # soft shadow
+        d.text((x, y), l, font=font, fill=(255, 255, 255), stroke_width=2, stroke_fill=(255, 255, 255)); y += lh
+    card.save(out_path, "JPEG", quality=85, optimize=True)
+    return True
+
+def make_card(candidates, color, out_path, name=""):
     """Channel logo centered on its group's gradient. Uses the first logo unless it is white/monochrome
-    and another candidate is clearly more colorful. Returns (written, used_other_logo)."""
+    and another candidate is clearly more colorful. No usable logo: a name card instead.
+    Returns (written, used_other_logo)."""
     from PIL import Image
     first = load_logo(candidates[0]) if candidates else None
     logo, changed = first, False
@@ -192,7 +215,8 @@ def make_card(candidates, color, out_path):
                 best, best_c = alt, colorfulness(alt)
         changed = best is not first and best is not None
         logo = best
-    if logo is None: return False, False
+    if logo is None:
+        return (name_card(name, color, out_path), "name") if name else (False, False)
     card = gradient(color)
     box = logo.getchannel("A").getbbox()                  # trim empty transparent border
     if box: logo = logo.crop(box)
@@ -324,18 +348,21 @@ def main():
             for key_name in (e["p"]["name"], e["p"].get("original_name", ""), e["c"]["name"]):
                 out += alt_logos.get(norm_name(key_name), []) if key_name else []
             return list(dict.fromkeys(out))
-        todo = [e for e in visible if cands(e)]
+        todo = list(visible)   # every channel gets a card (name card when no logo can be loaded)
         with cf.ThreadPoolExecutor(32) as ex:
-            res = list(ex.map(lambda e: make_card(cands(e), style(e)[0], f'site/cards/{e["num"]}.jpg'), todo))
+            res = list(ex.map(lambda e: make_card(cands(e), style(e)[0], f'site/cards/{e["num"]}.jpg', e["p"]["name"]), todo))
         for e, (good, _) in zip(todo, res):
             if good and base:
                 logo_for[e["gid"]] = f'{base}cards/{e["num"]}.jpg'; cards += 1
-        changed = [e["p"]["name"] for e, (good, ch) in zip(todo, res) if good and ch]
+        changed = [e["p"]["name"] for e, (good, ch) in zip(todo, res) if good and ch is True]
+        named = [e["p"]["name"] for e, (good, ch) in zip(todo, res) if good and ch == "name"]
         report.append(f"Logo cards: {sum(g for g, _ in res)} of {len(todo)} made" + ("" if base else " (local test: not linked)"))
         local = {l.strip() for l in open("logos_local.txt", encoding="utf-8") if l.strip() and not l.startswith("#")} if os.path.exists("logos_local.txt") else set()
         for e in visible:
             if str(e["num"]) in local: logo_for[e["gid"]] = f'{SHIELD_MEDIA}apex-logos/{e["num"]}.jpg'
         report.append(f"High-res logo cards stored on the Shield: {sum(1 for e in visible if str(e['num']) in local)} channels")
+        report.append(f"Name cards (feed has no logo or a broken one): {len(named)} channels"
+                      + (f" (e.g. {', '.join(named[:8])})" if named else ""))
         report.append(f"Full-color logo used instead of a white/monochrome one: {len(changed)} channels"
                       + (f" (e.g. {', '.join(changed[:12])})" if changed else ""))
     except ImportError:
@@ -371,13 +398,45 @@ def main():
         return f"https://images.pluto.tv/series/{m.group(1)}/featuredImage.jpg?fm=jpg&amp;q=80&amp;w=1920&amp;h=1080" if m.group(1) in wide else m.group(0)
     report.append(f"Pluto widescreen 1080p pictures: {len(wide)} of {len(sids)} series")
 
+    # No stretched low-res pictures: every show picture is measured once (only the first bytes are read) and the
+    # sizes are remembered in site/artsizes.json between runs. Pictures under 700 px tall, portrait posters and
+    # broken links are replaced by the group's themed 1080p backdrop (Pluto episode posters are 694x1000,
+    # some Roku pictures 800x450, a Pluto resize server 330x330).
+    icon_re = re.compile(r'<icon src="([^"]+)"\s*/>')
+    def final_xml(x): return pluto_re.sub(to_wide, x) if "images.pluto.tv/series/" in x else x
+    urls = {m.group(1) for items in progs.values() for _, _, x in items for m in icon_re.finditer(final_xml(x))
+            if "featuredImage.jpg" not in m.group(1)}
+    sizes = {}
+    try: sizes = json.loads(fetch(base + "artsizes.json", timeout=30).decode()) if base else json.load(open("site/artsizes.json"))
+    except Exception: sizes = {}
+    def img_size(u):
+        from PIL import ImageFile
+        try:
+            req = urllib.request.Request(u.replace("&amp;", "&"), headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=15) as r:
+                p = ImageFile.Parser()
+                for _ in range(16):                      # up to 256 KB, usually the first 4 KB is enough
+                    chunk = r.read(16384)
+                    if not chunk: break
+                    p.feed(chunk)
+                    if p.image: return list(p.image.size)
+        except Exception: pass
+        return None
+    todo_urls = sorted(u for u in urls if u not in sizes)
+    with cf.ThreadPoolExecutor(32) as ex:
+        for u, sz in zip(todo_urls, ex.map(img_size, todo_urls)): sizes[u] = sz
+    sizes = {u: sizes[u] for u in urls}                  # keep only pictures still in use
+    json.dump(sizes, open("site/artsizes.json", "w"), separators=(",", ":"))
+    low = {u for u, sz in sizes.items() if not sz or sz[1] < 700 or sz[1] > sz[0]}
+    report.append(f"Show pictures checked: {len(urls)} ({len(todo_urls)} new); low-res/portrait/broken replaced by themed backdrops: {len(low)}")
+
     gz = gzip.open("site/shield-tv-guide.xml.gz", "wt", encoding="utf-8", compresslevel=9)
     gz.write('<?xml version="1.0" encoding="UTF-8"?>\n<tv generator-info-name="free-tv-guide">\n')
     for e in visible:
         logo = logo_for[e["gid"]]
         gz.write(f'<channel id={quoteattr(e["gid"])}><display-name>{escape(e["p"]["name"])}</display-name>'
                  + (f"<icon src={quoteattr(logo)}/>" if logo else "") + "</channel>\n")
-    fill_count, with_real_now, with_art = 0, 0, 0
+    fill_count, with_real_now, with_art, replaced = 0, 0, 0, 0
     for e in visible:
         gid, nm = e["gid"], e["p"]["name"]
         items = sorted(progs.get(gid, []), key=lambda x: x[0])
@@ -400,6 +459,9 @@ def main():
         for a, b, xml in items:
             has_art = "<icon" in xml; with_art += has_art
             if "images.pluto.tv/series/" in xml: xml = pluto_re.sub(to_wide, xml)
+            m = icon_re.search(xml) if has_art else None
+            if m and m.group(1) in low:                  # never stretch a small/portrait/broken picture
+                xml = xml[:m.start()] + xml[m.end():]; has_art = False; with_art -= 1; replaced += 1
             if not has_art:
                 tag = no_art_tag(a)
                 if tag: xml = xml[:xml.rindex("</programme>")] + tag + "</programme>"
@@ -414,7 +476,8 @@ def main():
     guide_src = [e for e in visible if e["src_id"]]
     report.append(f"Guide: {real} real listings + {fill_count} 'Live:' fill-in blocks; "
                   f"{with_real_now} of {len(guide_src)} channels with a guide source have a real listing on now")
-    report.append(f"Program artwork: {with_art} of {real} real listings have an image ({100 * with_art // max(real, 1)}%)")
+    report.append(f"Program artwork: {with_art} of {real} real listings have a sharp image ({100 * with_art // max(real, 1)}%); "
+                  f"{replaced} small/portrait/broken pictures swapped for themed backdrops")
     report.append(f"Stream check: {len(to_test)} tested, {failed_now} failed this run"
                   + (" (too many failures, treated as a network problem: nothing newly hidden)" if trouble else "")
                   + "; Plex not tested")
