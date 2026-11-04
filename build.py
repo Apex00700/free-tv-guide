@@ -77,6 +77,10 @@ SOURCES = {  # service: (playlist URL, guide URL or None, id prefix)
 BUILTIN_PLAYER = {"Local Now"}
 TEST_UA ="Kodi/21.2 (Linux; Android 11) Android/11 Sys_CPU/aarch64 App_Bitness/64 Version/21.2"
 
+# Guide placeholders some feeds send while the channel is actually streaming (Xumo listed "SIGN OFF"
+# 7 PM-2:30 AM for FOX LOCAL Seattle on 2026-11-03 while it showed live election coverage).
+PLACEHOLDER_RE = re.compile(r"^\s*(sign[\s-]*off|sign[\s-]*on|off[\s-]*air|station\s+off[\s-]*air|no\s+programming)\s*[.!]*\s*$", re.I)
+
 MAX_URL = 1000   # IPTV Simple cuts stream URLs at ~1024 characters; cut URLs fail (HTTP 400). Tested 2026-11-01.
 
 def shorten_url(url):
@@ -322,7 +326,8 @@ def main():
                     try: a, b = parse_time(el.get("start")), parse_time(el.get("stop"))
                     except Exception: a = b = None
                     title = (el.findtext("title") or "").strip()
-                    if a and b > lo and a < hi and title and not title.startswith("NOT_PUBLISHED"):
+                    # PLACEHOLDER_RE: "SIGN OFF" etc. while the stream is live -> dropped, the gap gets a "Live:" block
+                    if a and b > lo and a < hi and title and not title.startswith("NOT_PUBLISHED") and not PLACEHOLDER_RE.match(title):
                         el.set("channel", gid); el.tail = None
                         for d in el.findall("date"):          # some feeds send 1970-01-01 as "unknown" (shows as 12/31/1969)
                             if (d.text or "0")[:4] < "1971": el.remove(d)
