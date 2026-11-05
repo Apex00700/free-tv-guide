@@ -1,20 +1,12 @@
 number,group,name,service,match,key,mychannels,original_name,include
 1,Seattle Area,FOX Local Seattle,Xumo,name,FOX LOCAL Seattle,yes,FOX LOCAL Seattle,yes
 2,Seattle Area,FOX 13 Seattle,Local Now,id,LN_991C9E73-687C-4B95-AD6A-1ED471747562,yes,KCPQ FOX 13 Seattle WA,yes
-3,Seattle Area,KGW 8 Portland,Local Now,id,LN_CA8A62A2-B954-44F0-B9CF-96AB6417F5D7,,KGW NBC News 8 Portland OR,yes
-4,Seattle Area,KHQ 6 Spokane,Local Now,id,LN_3CE98F87-05F3-4C82-95F9-4E4FDFEDD0C7,,KHQ (NBC) News 6 Spokane WA,yes
 5,Seattle Area,KING 5 Seattle,Local Now,id,LN_06ABF5FD-8AFB-444D-9001-C766E5B770B8,yes,KING-TV NBC 5 News Seattle WA,yes
 6,Seattle Area,KIRO 7 Seattle,Pluto TV,id,632b619c8d2a6c0007ff534e,yes,KIRO Seattle,yes
-7,Seattle Area,KNDO 23 Yakima,Local Now,id,LN_D28FD0E9-288B-4D20-A4C6-86E8DF83973E,,KNDO (NBC) News 23 Yakima WA,yes
-8,Seattle Area,KNDU 25 Tri-Cities,Local Now,id,LN_FC1E0DFB-1B6B-4408-8A88-79146078BBA8,,KNDU (NBC) News 25 Richland WA,yes
-9,Seattle Area,KREM 2 Spokane,Local Now,id,LN_763AAEBF-2D51-404D-A308-9F54507CFA75,,KREM CBS 2 News Spokane WA,yes
-10,Seattle Area,KXLY 4 Spokane,Local Now,id,LN_A6CD2156-BD42-4CAC-B530-0C17F406A408,,KXLY Spokane Washington,yes
 100,News,60 Minutes,Local Now,id,LN_324D86DB-0F5E-4035-A08B-80897A293C0D,,60 Minutes,yes
 101,News,ABC News Live,Xumo,id,99951517,yes,ABC News Live,yes
 102,News,AccuWeather NOW,Xumo,id,99991649,,AccuWeather NOW,yes
 103,News,America's Voice News,Pluto TV,id,5e1f7da4bc7d740009831259,,America's Voice News,yes
-104,News,Arizona's Family,Roku Channel,id,ec2faed50af3503e934f0c342a7952fe,,Arizona's Family,yes
-105,News,Atlanta News First,Roku Channel,id,1672824c4fd55e5dbfcb57f147910270,,Atlanta News First,yes
 106,News,Azteca Noticias,Roku Channel,id,46eb1feb60da2bc45bee66f313b564de,,Azteca Noticias,no
 107,News,BBC News,Xumo,id,99951298,yes,BBC News,yes
 108,News,Blaze Live,Pluto TV,id,5e46fba0c43b0d00096e5ac1,,Blaze Live,yes
@@ -24,9 +16,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 112,News,C4 en Alerta,Roku Channel,id,5cbb91d07dbd5b92ae3ef3e37be7f2ce,,C4 en Alerta,no
 113,News,CBC News,Roku Channel,id,8db0f9f4abf6542ba95f97a545f98513,,CBC News,yes
 114,News,CBS News 24/7,Xumo,id,99991158,yes,CBS News 24/7,yes
-115,News,Channel 3 Eyewitness News,Roku Channel,id,307cbde3d30957828ff68b3b979d6958,,Channel 3 Eyewitness News,yes
 116,News,Cheddar News,Xumo,id,99991220,,Cheddar News,yes
-117,News,Cleveland 19 News Plus,Roku Channel,id,d0d9af56b7735c318b66afe21089d028,,Cleveland 19 News Plus,yes
 118,News,CNN Headlines,Xumo,id,99951386,,CNN Headlines,yes
 119,News,CNN Noticias,Pluto TV,id,673248f9030a2c0008033af8,,CNN Noticias,no
 120,News,CNN Originals,Xumo,id,99951387,,CNN Originals,yes
@@ -40,7 +30,6 @@ number,group,name,service,match,key,mychannels,original_name,include
 128,News,Euronews English,Local Now,id,LN_8F2F78C5-E1C5-436F-B8AC-771C644B08C7,,Euronews English,yes
 129,News,Euronews Español,Roku Channel,id,8acb4f9b8a255216966db355daaa1749,,Euronews Español,no
 130,News,Euronews World,Roku Channel,id,dafd06b712a35fbe9935d4c04c2e8b53,,Euronews World,no
-131,News,First Alert 4 St. Louis,Roku Channel,id,e8f8972f377a598590592ecd079e7cc4,,First Alert 4 St. Louis,yes
 132,News,FOX Weather,Roku Channel,id,0838d5ccb1d5564d98fb804ab314c85e,,FOX Weather,yes
 133,News,FRANCE 24,Plex,id,6a1610bebdf296985fd95603-678fe7959407a53556d3e8eb,,FRANCE 24,yes
 134,News,KPTV FOX 12 Oregon News,Roku Channel,id,5c8d77c2f6b85da3a7e74223b769ef5c,,KPTV FOX 12 Oregon News,no
@@ -73,16 +62,13 @@ number,group,name,service,match,key,mychannels,original_name,include
 161,News,theGrio,Tubi,id,555129,,theGrio,yes
 162,News,TODAY All Day,Xumo,id,99991245,,TODAY All Day,yes
 163,News,TYT,Xumo,id,99991147,,TYT,yes
-164,News,WBTV News,Samsung TV Plus,id,US700004OA,,WBTV News,yes
 165,News,WBTV News 3,Roku Channel,id,bf7ee95e6a905222a1d24174120cc106,,WBTV News 3,no
-166,News,WCNC,Samsung TV Plus,id,US1400004HN,,WCNC,yes
 167,News,Weathernation,Roku Channel,id,a1e38b83ae2a56f09f4d2ee8ed206b35,,Weathernation,yes
 168,News,WeatherNation Los Angeles,Pluto TV,id,61e9af6bfbbcc6000700119b,,WeatherNation Los Angeles,yes
 169,News,WeatherSpy,Local Now,id,LN_195280D1-654A-45BE-BCCB-556B9E56CA80,,WeatherSpy,yes
 170,News,WN Charlotte,Samsung TV Plus,id,USBC3200001S5,,WN Charlotte,yes
-171,News,WSMV 4 News,Roku Channel,id,d53b1fb8c41f574387cde82d084515ea,,WSMV 4 News,yes
-172,News,WSOC Charlotte,Samsung TV Plus,id,USBC1000017D8,,WSOC Charlotte,yes
 173,News,Yahoo! Finance,Local Now,id,LN_88CE1401-5EBC-4163-983F-534C8916321A,,Yahoo! Finance,yes
+174,News,ABC 20/20,Samsung TV Plus,id,US4800001W5,,ABC 20/20,yes
 200,Sports,ACC Digital,Xumo,id,99991315,,ACC Digital Network,yes
 201,Sports,ACCDN,Tubi,id,400000012,,ACCDN,yes
 202,Sports,ACL Cornhole TV,Plex,id,6a1610bebdf296985fd95603-63504925a97bd70eaef54f01,,ACL Cornhole TV,yes
@@ -1310,7 +1296,6 @@ number,group,name,service,match,key,mychannels,original_name,include
 2509,Español,XITE Siempre Latino,Samsung TV Plus,id,USBD3300010L9,,XITE Siempre Latino,no
 2510,Español,Zona TUDN,Xumo,id,99951563,,Zona TUDN,no
 2511,Español,¿Qué Culpa Tiene Fatmagül?,Samsung TV Plus,id,US270000298,,¿Qué Culpa Tiene Fatmagül?,no
-2600,US Local News,ABC 20/20,Samsung TV Plus,id,US4800001W5,,ABC 20/20,yes
 2601,US Local News,ABC7 Sarasota,Roku Channel,id,50b18dea9c5c51568c1343fcd3d88ec9,,ABC7 Sarasota,yes
 2602,US Local News,CBS 6 Richmond WTVR,Tubi,id,689473,,CBS 6 Richmond WTVR,yes
 2603,US Local News,FOX LOCAL Los Angeles,Tubi,id,555113,,FOX LOCAL Los Angeles,yes
@@ -1324,6 +1309,21 @@ number,group,name,service,match,key,mychannels,original_name,include
 2611,US Local News,WGAL Very Lancaster 8,Tubi,id,603917,,WGAL Very Lancaster 8,yes
 2612,US Local News,WMAR 2 Baltimore,Tubi,id,692074,,WMAR 2 Baltimore,yes
 2613,US Local News,WUSA DC/MD/VA 9,Tubi,id,610471,,WUSA DC/MD/VA 9,yes
+2614,US Local News,KGW 8 Portland,Local Now,id,LN_CA8A62A2-B954-44F0-B9CF-96AB6417F5D7,,KGW NBC News 8 Portland OR,yes
+2615,US Local News,KHQ 6 Spokane,Local Now,id,LN_3CE98F87-05F3-4C82-95F9-4E4FDFEDD0C7,,KHQ (NBC) News 6 Spokane WA,yes
+2616,US Local News,KNDO 23 Yakima,Local Now,id,LN_D28FD0E9-288B-4D20-A4C6-86E8DF83973E,,KNDO (NBC) News 23 Yakima WA,yes
+2617,US Local News,KNDU 25 Tri-Cities,Local Now,id,LN_FC1E0DFB-1B6B-4408-8A88-79146078BBA8,,KNDU (NBC) News 25 Richland WA,yes
+2618,US Local News,KREM 2 Spokane,Local Now,id,LN_763AAEBF-2D51-404D-A308-9F54507CFA75,,KREM CBS 2 News Spokane WA,yes
+2619,US Local News,KXLY 4 Spokane,Local Now,id,LN_A6CD2156-BD42-4CAC-B530-0C17F406A408,,KXLY Spokane Washington,yes
+2620,US Local News,Arizona's Family,Roku Channel,id,ec2faed50af3503e934f0c342a7952fe,,Arizona's Family,yes
+2621,US Local News,Atlanta News First,Roku Channel,id,1672824c4fd55e5dbfcb57f147910270,,Atlanta News First,yes
+2622,US Local News,Channel 3 Eyewitness News,Roku Channel,id,307cbde3d30957828ff68b3b979d6958,,Channel 3 Eyewitness News,yes
+2623,US Local News,Cleveland 19 News Plus,Roku Channel,id,d0d9af56b7735c318b66afe21089d028,,Cleveland 19 News Plus,yes
+2624,US Local News,First Alert 4 St. Louis,Roku Channel,id,e8f8972f377a598590592ecd079e7cc4,,First Alert 4 St. Louis,yes
+2625,US Local News,WBTV News,Samsung TV Plus,id,US700004OA,,WBTV News,yes
+2626,US Local News,WCNC,Samsung TV Plus,id,US1400004HN,,WCNC,yes
+2627,US Local News,WSMV 4 News,Roku Channel,id,d53b1fb8c41f574387cde82d084515ea,,WSMV 4 News,yes
+2628,US Local News,WSOC Charlotte,Samsung TV Plus,id,USBC1000017D8,,WSOC Charlotte,yes
 2700,More Channels,AddictaTV,Plex,id,6a1610bebdf296985fd95603-69d6d88b1790acff6189dea5,,AddictaTV,no
 2701,More Channels,AfroLandTV,Plex,id,6a1610bebdf296985fd95603-60e737a4ebef9d002c4d0a0c,,AfroLandTV,yes
 2702,More Channels,Aliwko,Plex,id,6a1610bebdf296985fd95603-64d4ee537b323f6abbd19e59,,Aliwko,yes

@@ -51,6 +51,18 @@ BACKDROPS = {"seattle-area": 4, "us-local-news": 3, "news": 3, "sports": 3, "mov
              "comedy": 2, "classic-tv": 1, "reality": 2, "game-shows": 2, "entertainment": 3, "kids-family": 2,
              "science-history": 3, "food-travel": 2, "music": 3, "relax": 3, "gaming-anime": 3, "more-channels": 2}
 CARD_W, CARD_H = 1280, 720  # 720p cards: sharp when shown as the big background on a 4K TV
+# Apex Live's own logo cards (site/live-cards/<number>.jpg): sized for its tiles (~392x220 px at 1080p), empty padding
+# trimmed and every logo fitted into the same box (60% of the width x 50% of the height). Kodi's cards/ are unchanged.
+LIVE_W, LIVE_H = 480, 270
+LIVE_BOX = (0.60, 0.50)
+# Channels whose feed sends the wrong logo: source key (channels.csv "key") -> public logo to use instead.
+# Used for Apex Live's card (live-cards/) and the playlist/guide logo. Kodi's cards/ keep the feed's logo (unchanged).
+# If the logo can't be downloaded, the channel simply keeps its usual logo.
+LOGO_FIX = {
+    # FOX 13 Seattle (KCPQ): Local Now sends the "FOX LOCAL Seattle" logo. Public-domain logo (Wikimedia Commons).
+    "LN_991C9E73-687C-4B95-AD6A-1ED471747562":
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/KCPQ_Fox_13_2021.svg/1280px-KCPQ_Fox_13_2021.svg.png",
+}
 
 DAYS = 2
 HIDE_AFTER = 3            # consecutive failed runs before a channel is hidden
@@ -158,7 +170,7 @@ def fillers(start, end, title, desc, step_hours=1):
 
 def hex_rgb(h): return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
 
-def gradient(color):
+def gradient(color, size=None):
     """Static diagonal gradient: group color at top-left fading to a dark shade at bottom-right."""
     from PIL import Image
     a = hex_rgb(color); b = tuple(int(v * 0.30) for v in a)
@@ -167,7 +179,7 @@ def gradient(color):
         for x in range(32):
             t = (x / 31 * 0.6 + y / 17 * 0.4)
             small.putpixel((x, y), tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3)))
-    return small.resize((CARD_W, CARD_H), Image.BILINEAR)
+    return small.resize(size or (CARD_W, CARD_H), Image.BILINEAR)
 
 def colorfulness(img):
     """0 = white/grey/black only, higher = more color. Looks only at visible pixels."""
@@ -182,31 +194,61 @@ def load_logo(url):
     try: return Image.open(io.BytesIO(fetch(url, timeout=20))).convert("RGBA")
     except Exception: return None
 
-def name_card(name, color, out_path):
+def name_card(name, color, out_path, size=None):
     """For channels whose feed has no logo (or a broken one): the channel name in white (stroked = bold look) on the group's
     gradient, so no tile is ever blank. Uses Pillow's built-in font (no font files needed)."""
     from PIL import ImageDraw, ImageFont
-    card = gradient(color); d = ImageDraw.Draw(card)
+    W, H = size or (CARD_W, CARD_H); k = W / CARD_W     # k = 1 for Kodi's cards (unchanged)
+    card = gradient(color, (W, H)); d = ImageDraw.Draw(card)
     words = name.replace(".US", "").split()
-    for size in (120, 104, 90, 78, 66, 56):
-        font = ImageFont.load_default(size=size); lines, cur = [], ""
+    for fsize in (120, 104, 90, 78, 66, 56):
+        font = ImageFont.load_default(size=max(10, int(fsize * k))); lines, cur = [], ""
         for w in words:
             t = (cur + " " + w).strip()
-            if d.textlength(t, font=font) <= CARD_W * 0.80 or not cur: cur = t
+            if d.textlength(t, font=font) <= W * 0.80 or not cur: cur = t
             else: lines.append(cur); cur = w
         lines.append(cur)
-        if len(lines) <= 3 and max(d.textlength(l, font=font) for l in lines) <= CARD_W * 0.84: break
-    lh = int(size * 1.18); y = (CARD_H - lh * len(lines)) // 2
+        if len(lines) <= 3 and max(d.textlength(l, font=font) for l in lines) <= W * 0.84: break
+    lh = int(fsize * k * 1.18); y = (H - lh * len(lines)) // 2
+    sh, st = max(1, round(3 * k)), max(1, round(2 * k))
     for l in lines:
-        x = (CARD_W - d.textlength(l, font=font)) // 2
-        d.text((x + 3, y + 4), l, font=font, fill=(0, 0, 0))          # soft shadow
-        d.text((x, y), l, font=font, fill=(255, 255, 255), stroke_width=2, stroke_fill=(255, 255, 255)); y += lh
+        x = (W - d.textlength(l, font=font)) // 2
+        d.text((x + sh, y + round(4 * k)), l, font=font, fill=(0, 0, 0))          # soft shadow
+        d.text((x, y), l, font=font, fill=(255, 255, 255), stroke_width=st, stroke_fill=(255, 255, 255)); y += lh
     card.save(out_path, "JPEG", quality=85, optimize=True)
     return True
 
-def make_card(candidates, color, out_path, name=""):
+def trim_logo(logo):
+    """Apex Live cards: cut empty edges. Transparent logos: the transparent border. Fully opaque logos (e.g. a logo on
+    its own white plate): the flat border in the corner color."""
+    from PIL import Image, ImageChops
+    a = logo.getchannel("A")
+    if a.getextrema()[0] < 250:
+        box = a.point(lambda v: 255 if v > 16 else 0).getbbox()
+    else:
+        rgb = logo.convert("RGB")
+        diff = ImageChops.difference(rgb, Image.new("RGB", rgb.size, rgb.getpixel((0, 0))))
+        box = diff.convert("L").point(lambda v: 255 if v > 24 else 0).getbbox()
+    return logo.crop(box) if box else logo
+
+def live_card(logo, color, out_path, name):
+    """Apex Live's 480x270 card: the trimmed logo fitted into LIVE_BOX on the group gradient (or a name card)."""
+    from PIL import Image
+    if logo is None:
+        return name_card(name, color, out_path, (LIVE_W, LIVE_H)) if name else False
+    logo = trim_logo(logo)
+    sc = min(LIVE_W * LIVE_BOX[0] / logo.width, LIVE_H * LIVE_BOX[1] / logo.height)
+    logo = logo.resize((max(1, round(logo.width * sc)), max(1, round(logo.height * sc))), Image.LANCZOS)
+    card = gradient(color, (LIVE_W, LIVE_H))
+    card.paste(logo, ((LIVE_W - logo.width) // 2, (LIVE_H - logo.height) // 2), logo)
+    card.save(out_path, "JPEG", quality=88, optimize=True)
+    return True
+
+def make_card(candidates, color, out_path, name="", live_path=None, live_logo=None):
     """Channel logo centered on its group's gradient. Uses the first logo unless it is white/monochrome
     and another candidate is clearly more colorful. No usable logo: a name card instead.
+    live_path: also write Apex Live's card from the same logo (no second download).
+    live_logo: a LOGO_FIX logo for Apex Live's card only (Kodi's card is made exactly as before).
     Returns (written, used_other_logo)."""
     from PIL import Image
     first = load_logo(candidates[0]) if candidates else None
@@ -219,6 +261,10 @@ def make_card(candidates, color, out_path, name=""):
                 best, best_c = alt, colorfulness(alt)
         changed = best is not first and best is not None
         logo = best
+    if live_path:
+        fixed = load_logo(live_logo) if live_logo else None
+        try: live_card(fixed or logo, color, live_path, name)
+        except Exception: pass                                   # never let Apex Live's card break Kodi's
     if logo is None:
         return (name_card(name, color, out_path), "name") if name else (False, False)
     card = gradient(color)
@@ -348,6 +394,7 @@ def main():
     try:
         import PIL  # noqa: F401
         os.makedirs("site/cards", exist_ok=True)
+        os.makedirs("site/live-cards", exist_ok=True)
         def cands(e):
             out = [u for u in [e["c"]["logo"], guide_icon.get(e["gid"])] if u]
             for key_name in (e["p"]["name"], e["p"].get("original_name", ""), e["c"]["name"]):
@@ -355,17 +402,24 @@ def main():
             return list(dict.fromkeys(out))
         todo = list(visible)   # every channel gets a card (name card when no logo can be loaded)
         with cf.ThreadPoolExecutor(32) as ex:
-            res = list(ex.map(lambda e: make_card(cands(e), style(e)[0], f'site/cards/{e["num"]}.jpg', e["p"]["name"]), todo))
+            res = list(ex.map(lambda e: make_card(cands(e), style(e)[0], f'site/cards/{e["num"]}.jpg', e["p"]["name"],
+                                                  live_path=f'site/live-cards/{e["num"]}.jpg',
+                                                  live_logo=LOGO_FIX.get(e["p"]["key"])), todo))
         for e, (good, _) in zip(todo, res):
             if good and base:
                 logo_for[e["gid"]] = f'{base}cards/{e["num"]}.jpg'; cards += 1
         changed = [e["p"]["name"] for e, (good, ch) in zip(todo, res) if good and ch is True]
         named = [e["p"]["name"] for e, (good, ch) in zip(todo, res) if good and ch == "name"]
         report.append(f"Logo cards: {sum(g for g, _ in res)} of {len(todo)} made" + ("" if base else " (local test: not linked)"))
+        report.append(f"Apex Live logo cards (live-cards/, {LIVE_W}x{LIVE_H}): {len(os.listdir('site/live-cards'))}")
         local = {l.strip() for l in open("logos_local.txt", encoding="utf-8") if l.strip() and not l.startswith("#")} if os.path.exists("logos_local.txt") else set()
         for e in visible:
             if str(e["num"]) in local: logo_for[e["gid"]] = f'{SHIELD_MEDIA}apex-logos/{e["num"]}.jpg'
         report.append(f"High-res logo cards stored on the Shield: {sum(1 for e in visible if str(e['num']) in local)} channels")
+        fixed = [e for e in visible if e["p"]["key"] in LOGO_FIX and os.path.exists(f'site/live-cards/{e["num"]}.jpg')]
+        for e in fixed:                                  # corrected logo: playlist + guide point at Apex Live's card
+            if base: logo_for[e["gid"]] = f'{base}live-cards/{e["num"]}.jpg'
+        report.append(f"Corrected logos (LOGO_FIX, playlist + live-cards/): {', '.join(e['p']['name'] for e in fixed) or 'none'}")
         report.append(f"Name cards (feed has no logo or a broken one): {len(named)} channels"
                       + (f" (e.g. {', '.join(named[:8])})" if named else ""))
         report.append(f"Full-color logo used instead of a white/monochrome one: {len(changed)} channels"
