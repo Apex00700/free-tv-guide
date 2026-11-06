@@ -338,7 +338,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 606,Movies,MHz Mysteries,Samsung TV Plus,id,USAJ22000130U,,MHz Mysteries,yes
 607,Movies,Midnight Pulp,Samsung TV Plus,id,USBD700015LK,,Midnight Pulp,yes
 608,Movies,Miramax Movie,Samsung TV Plus,id,US18000163F,,Miramax Movie Channel,yes
-609,Movies,Monsters & Nightmares,Xumo,id,99991399,,Monsters & Nightmares,yes
+609,Movies,Monsters & Nightmares,Xumo,id,99991399,,Monsters & Nightmares,no
 610,Movies,Movie Hub Action West,Samsung TV Plus,id,US38000108V,,Movie Hub Action West,no
 611,Movies,Movie Hub Romance,Samsung TV Plus,id,USBD3500033U0,,Movie Hub Romance,no
 612,Movies,Movie Hub West,Samsung TV Plus,id,USBD3500036HP,,Movie Hub West,no
