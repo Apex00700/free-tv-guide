@@ -1,10 +1,10 @@
 number,group,name,service,match,key,mychannels,original_name,include
-1,Seattle Area,FOX Local Seattle,Xumo,name,FOX LOCAL Seattle,yes,FOX LOCAL Seattle,yes
+101,News,ABC News Live,Xumo,id,99951517,yes,ABC News Live,yes
+1,Seattle Area,FOX Local Seattle,Xumo,name,FOX LOCAL Seattle,yes,FOX LOCAL Seattle,no
 2,Seattle Area,FOX 13 Seattle,Local Now,id,LN_991C9E73-687C-4B95-AD6A-1ED471747562,yes,KCPQ FOX 13 Seattle WA,yes
 5,Seattle Area,KING 5 Seattle,Local Now,id,LN_06ABF5FD-8AFB-444D-9001-C766E5B770B8,yes,KING-TV NBC 5 News Seattle WA,yes
 6,Seattle Area,KIRO 7 Seattle,Pluto TV,id,632b619c8d2a6c0007ff534e,yes,KIRO Seattle,yes
 100,News,60 Minutes,Local Now,id,LN_324D86DB-0F5E-4035-A08B-80897A293C0D,,60 Minutes,yes
-101,News,ABC News Live,Xumo,id,99951517,yes,ABC News Live,yes
 102,News,AccuWeather NOW,Xumo,id,99991649,,AccuWeather NOW,yes
 103,News,America's Voice News,Pluto TV,id,5e1f7da4bc7d740009831259,,America's Voice News,yes
 106,News,Azteca Noticias,Roku Channel,id,46eb1feb60da2bc45bee66f313b564de,,Azteca Noticias,no
@@ -22,8 +22,6 @@ number,group,name,service,match,key,mychannels,original_name,include
 120,News,CNN Originals,Xumo,id,99951387,,CNN Originals,yes
 121,News,Court TV,Xumo,id,99951559,,Court TV,yes
 122,News,Court TV Legendary Trials,Roku Channel,id,586bd3d19f6e4b7a5cf3458722984b82,,Court TV Legendary Trials,yes
-123,News,Cutlers Court,Samsung TV Plus,id,US700020AX,,Cutlers Court,yes
-124,News,Divorce Court,Xumo,id,99991346,,Divorce Court,yes
 125,News,Estrella News,Roku Channel,id,0af429c36c6b517e8df2025e809b3964,,Estrella News,no
 126,News,Estrella TV,Roku Channel,id,91dff2b8a62b5fe1bdf64de721032cba,,Estrella TV,no
 127,News,Euronews,Tubi,id,559144,,Euronews,yes
@@ -31,9 +29,10 @@ number,group,name,service,match,key,mychannels,original_name,include
 129,News,Euronews Español,Roku Channel,id,8acb4f9b8a255216966db355daaa1749,,Euronews Español,no
 130,News,Euronews World,Roku Channel,id,dafd06b712a35fbe9935d4c04c2e8b53,,Euronews World,no
 132,News,FOX Weather,Roku Channel,id,0838d5ccb1d5564d98fb804ab314c85e,,FOX Weather,yes
+147,News,Real America's Voice,Samsung TV Plus,id,USBB1900002KF,,Real America's Voice,yes
 133,News,FRANCE 24,Plex,id,6a1610bebdf296985fd95603-678fe7959407a53556d3e8eb,,FRANCE 24,yes
 134,News,KPTV FOX 12 Oregon News,Roku Channel,id,5c8d77c2f6b85da3a7e74223b769ef5c,,KPTV FOX 12 Oregon News,no
-135,News,Lauren Lake’s Paternity Court,Xumo,id,99951581,,Lauren Lake’s Paternity Court,yes
+135,News,Lauren Lake’s Paternity Court,Xumo,id,99951581,,Lauren Lake’s Paternity Court,no
 136,News,Law & Crime,Roku Channel,id,8ba514251e1a58b7b53368177baa1041,,Law & Crime,yes
 137,News,LiveNOW from FOX,Roku Channel,id,f9c0d48b540a55dcb98b04d2cc8abf25,,LiveNOW from FOX,yes
 138,News,Localish,Tubi,id,618763,,Localish,yes
@@ -43,9 +42,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 142,News,Newsmax N2,LG Channels,id,newsmax_nwsmx_US,,Newsmax N2,no
 143,News,Noticias Telemundo AHORA,Roku Channel,id,e6f5a623c45d5757a50e602eb0591f62,,Noticias Telemundo AHORA,no
 144,News,OAN Plus,Roku Channel,id,e29e205ea1fb529f996ad862a2d6724e,,OAN Plus,yes
-145,News,Paternity Court,Roku Channel,id,ce8a61a75e94b71f52ad51ed92b1ec65,,Paternity Court,yes
 146,News,RCN Noticias,Roku Channel,id,a9aae4e62e6fd8e401033cd14ceeaaa2,,RCN Noticias,no
-147,News,Real America's Voice,Samsung TV Plus,id,USBB1900002KF,,Real America's Voice,yes
 148,News,Reuters,LG Channels,id,reuters_reuters_US,,Reuters,yes
 149,News,Reuters 60,Xumo,id,99951197,,Reuters 60,yes
 150,News,ROI TV,Local Now,id,LN_6901EB4F-8CD3-468D-B1F6-3001FF467777,,ROI TV,yes
@@ -97,7 +94,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 225,Sports,CW Presents WWE NXT,Roku Channel,id,ac0caef9123a35df3b884b139340a597,,CW Presents WWE NXT,yes
 226,Sports,DAZN Ringside,Tubi,id,400000024,,DAZN Ringside,yes
 227,Sports,Donut,Samsung TV Plus,id,US17000281T,,Donut,yes
-228,Sports,DP World Tour,Samsung TV Plus,id,US4600010KE,,DP World Tour,yes
+228,Sports,DP World Tour,Samsung TV Plus,id,US4600010KE,,DP World Tour,no
 229,Sports,DraftKings,Roku Channel,id,5976983fa00953dab911a0ebea932943,,DraftKings,yes
 230,Sports,El Rey Rebel,Roku Channel,id,31d5929928835b90af7bee669e6dd217,,El Rey Rebel,yes
 231,Sports,Electric Now,Roku Channel,id,15cc44e50d8453e18f21ea37713319c5,,Electric Now,yes
@@ -114,7 +111,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 242,Sports,FloHockey 24/7,LG Channels,id,flohockey247_amg02278c6_us,,FloHockey 24/7,yes
 243,Sports,FloRacing 24/7,Roku Channel,id,58e6bfd1c4819af32ead547dbc82e1f8,,FloRacing 24/7,yes
 244,Sports,FloSports Channel,LG Channels,id,flosportschannel_amg02278c7_us,,FloSports Channel,yes
-245,Sports,Formula 1 Channel,Samsung TV Plus,id,US600011Q2,,Formula 1 Channel,yes
+245,Sports,Formula 1 Channel,Samsung TV Plus,id,US600011Q2,,Formula 1 Channel,no
 246,Sports,FOX Sports,Roku Channel,id,0fc01f1136055d89bae495ba92eff445,,FOX Sports,yes
 247,Sports,Fox Sports En Español,Tubi,id,613695,,Fox Sports En Español,no
 248,Sports,FOX Sports on Tubi,Tubi,id,613683,,FOX Sports on Tubi,yes
@@ -123,7 +120,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 251,Sports,Fubo Sports,Roku Channel,id,b4273871759a5631bd536d2214f175e5,,Fubo Sports Network,yes
 252,Sports,FUEL TV,Roku Channel,id,10b859e5e8a1e710680c11dfdfb85c11,,FUEL TV,yes
 253,Sports,Game & Fish TV,Local Now,id,LN_300BF733-923B-4966-9678-9C4FBDEEF75A,,Game & Fish TV,yes
-254,Sports,German Soccer,LG Channels,id,us-cinedigm_entertainment_corp_germansoccerleague_1,,German Soccer Network,yes
+254,Sports,German Soccer,LG Channels,id,us-cinedigm_entertainment_corp_germansoccerleague_1,,German Soccer Network,no
 255,Sports,GLORY Kickboxing,Xumo,id,99991278,,GLORY Kickboxing,yes
 256,Sports,Golazo Network,Pluto TV,id,63a0e33a45264d000850ed7e,,Golazo Network,yes
 257,Sports,GOLFPASS,Xumo,id,99951462,,GOLFPASS,yes
@@ -242,7 +239,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 507,Movies,Action Hollywood Movies,Plex,id,6a1610bebdf296985fd95603-66be944f8711311880995280,,Action Hollywood Movies,yes
 508,Movies,Alfred Hitchcock Presents,Xumo,id,99951256,,Alfred Hitchcock Presents,yes
 509,Movies,Alien Nation by DUST,Xumo,id,99991292,,Alien Nation by DUST,yes
-510,Movies,ALL ACTION,Samsung TV Plus,id,USBB2300001QP,,ALL ACTION,yes
+510,Movies,ALL ACTION,Samsung TV Plus,id,USBB2300001QP,,ALL ACTION,no
 511,Movies,Always Christmas,Plex,id,6a1610bebdf296985fd95603-6ad29b265374a1e72d134645,,Always Christmas,yes
 512,Movies,AMC Thrillers,Xumo,id,99951377,,AMC Thrillers,yes
 513,Movies,Andromeda,Roku Channel,id,5396bbd4038fd1901a9a7a63af4f2441,,Andromeda,no
@@ -274,7 +271,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 539,Movies,CW Gold,Samsung TV Plus,id,US25000063S,,CW Gold,yes
 540,Movies,Danger TV,Roku Channel,id,447d63b6da208bb796b69f0383c474a1,,Danger TV,no
 541,Movies,Dark Matter TV,Xumo,id,9999615,,Dark Matter TV,yes
-542,Movies,Dawson's Creek,Samsung TV Plus,id,US4100005NW,,Dawson's Creek,yes
+542,Movies,Dawson's Creek,Samsung TV Plus,id,US4100005NW,,Dawson's Creek,no
 543,Movies,Death Valley Days,Samsung TV Plus,id,US2900007HA,,Death Valley Days,yes
 544,Movies,Demand Africa,Xumo,id,99991381,,Demand Africa,yes
 545,Movies,Designated Survivor,Xumo,id,99951346,,Designated Survivor,yes
@@ -285,8 +282,8 @@ number,group,name,service,match,key,mychannels,original_name,include
 550,Movies,Dungeons & Dragons Adventures,Xumo,id,99951440,,Dungeons & Dragons Adventures,yes
 551,Movies,Fear Factor,Xumo,id,99951130,,Fear Factor,yes
 552,Movies,Fear Factor USA,Tubi,id,670602,,Fear Factor USA,no
-553,Movies,Fear Zone,Samsung TV Plus,id,USBC1300012VK,,Fear Zone,yes
-554,Movies,Felicity,Samsung TV Plus,id,US4100029G5,,Felicity,yes
+553,Movies,Fear Zone,Samsung TV Plus,id,USBC1300012VK,,Fear Zone,no
+554,Movies,Felicity,Samsung TV Plus,id,US4100029G5,,Felicity,no
 555,Movies,FilmRise Action,Plex,id,6a1610bebdf296985fd95603-66ea0504c24d95b51b7cd189,,FilmRise Action,yes
 556,Movies,FilmRise Anime,Samsung TV Plus,id,US3500004M7,,FilmRise Anime,yes
 557,Movies,FilmRise Autopista al Cielo,Roku Channel,id,b602b0edb0cd58a5a5be2b7554166c07,,FilmRise Autopista al Cielo,no
@@ -305,7 +302,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 570,Movies,Flicks of Fury,Pluto TV,id,58e55b14ad8e9c364d55f717,,Flicks of Fury,yes
 571,Movies,Free Movies Plus,LG Channels,id,freemoviesplus_amg02042c1eng_US,,Free Movies Plus,yes
 572,Movies,FreeTV Terror,Roku Channel,id,624f67e783acee9909159694148f04bc,,FreeTV Terror,yes
-573,Movies,get TV,Samsung TV Plus,id,USBD1200002PM,,get TV,yes
+573,Movies,get TV,Samsung TV Plus,id,USBD1200002PM,,get TV,no
 574,Movies,Ghost Stories,Samsung TV Plus,id,US4200004KK,,Ghost Stories,yes
 575,Movies,Ghost Whisperer,Pluto TV,id,6a2b0e66c2b638404f0a4ffb,,Ghost Whisperer,yes
 576,Movies,Ghosts Are Real,Xumo,id,99951391,,Ghosts Are Real,yes
@@ -342,9 +339,9 @@ number,group,name,service,match,key,mychannels,original_name,include
 607,Movies,Midnight Pulp,Samsung TV Plus,id,USBD700015LK,,Midnight Pulp,yes
 608,Movies,Miramax Movie,Samsung TV Plus,id,US18000163F,,Miramax Movie Channel,yes
 609,Movies,Monsters & Nightmares,Xumo,id,99991399,,Monsters & Nightmares,yes
-610,Movies,Movie Hub Action West,Samsung TV Plus,id,US38000108V,,Movie Hub Action West,yes
-611,Movies,Movie Hub Romance,Samsung TV Plus,id,USBD3500033U0,,Movie Hub Romance,yes
-612,Movies,Movie Hub West,Samsung TV Plus,id,USBD3500036HP,,Movie Hub West,yes
+610,Movies,Movie Hub Action West,Samsung TV Plus,id,US38000108V,,Movie Hub Action West,no
+611,Movies,Movie Hub Romance,Samsung TV Plus,id,USBD3500033U0,,Movie Hub Romance,no
+612,Movies,Movie Hub West,Samsung TV Plus,id,USBD3500036HP,,Movie Hub West,no
 613,Movies,Movie Music by Stingray,Plex,id,6a1610bebdf296985fd95603-62fbf197c67d52bddf74cc87,,Movie Music by Stingray,yes
 614,Movies,MovieSphere,Xumo,id,99951251,,MovieSphere by Lionsgate,yes
 615,Movies,Mr. Bean Live Action,Local Now,id,LN_CB5CDBE8-57CC-42D0-BED6-E5979B26EE80,,Mr. Bean Live Action,yes
@@ -352,7 +349,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 617,Movies,Mysteries Xplored,Samsung TV Plus,id,USBB5200028MM,,Mysteries Xplored,yes
 618,Movies,Mysterious Worlds,Xumo,id,99951398,,Mysterious Worlds,yes
 619,Movies,Nash Bridges,Xumo,id,99951330,,Nash Bridges,yes
-620,Movies,Nashville,Samsung TV Plus,id,US19000072T,,Nashville,yes
+620,Movies,Nashville,Samsung TV Plus,id,US19000072T,,Nashville,no
 621,Movies,NEW KMOVIES,Samsung TV Plus,id,USAJ30000122O,,NEW KMOVIES,yes
 622,Movies,NEW Korean MOVIES & SERIES,Xumo,id,99991386,,NEW Korean MOVIES & SERIES,no
 623,Movies,Old West TV,Local Now,id,LN_233F339E-2A7B-4F3B-8087-FE1D4EC8DC06,,Old West TV,yes
@@ -383,7 +380,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 648,Movies,Pluto TV Trending Now,Pluto TV,id,673247127d5da5000817b4d6,,Pluto TV Trending Now,yes
 649,Movies,Pluto TV Westerns,Pluto TV,id,5b4e94282d4ec87bdcbb87cd,,Pluto TV Westerns,yes
 650,Movies,Rawhide,Pluto TV,id,634f307c7a068e00072c9982,,Rawhide,yes
-651,Movies,Samsung Television,Samsung TV Plus,id,US300068X7,,Samsung Television Network,yes
+651,Movies,Samsung Television,Samsung TV Plus,id,US300068X7,,Samsung Television Network,no
 652,Movies,Scares by Shudder,Roku Channel,id,349e0f0840cf21b888bff327b41a2413,,Scares by Shudder,yes
 653,Movies,Scream Factory TV,Local Now,id,LN_D0DF28EB-0756-4476-80C4-FD05DE2E4E09,,Scream Factory TV,yes
 654,Movies,Screambox TV,Local Now,id,LN_06FFDD3B-A149-4023-8EF8-96685EB19DDE,,Screambox TV,yes
@@ -427,7 +424,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 692,Movies,Western Bound,Samsung TV Plus,id,USBC3200020QF,,Western Bound,yes
 693,Movies,Western Bound Wrangled by INSP,Xumo,id,99951160,,Western Bound Wrangled by INSP,yes
 694,Movies,Wild West TV,Xumo,id,99951356,,Wild West TV,yes
-695,Movies,Wildfire,Samsung TV Plus,id,US1900013Z7,,Wildfire,yes
+695,Movies,Wildfire,Samsung TV Plus,id,US1900013Z7,,Wildfire,no
 696,Movies,Xena Warrior Princess,Xumo,id,99951412,,Xena Warrior Princess,yes
 697,Movies,Action & Drama TV,Xumo,id,99991784,,Xumo Free Action & Drama TV,yes
 698,Movies,Xumo Her Movies,Roku Channel,id,b953c51bbdf5866b3816740c3da7c124,,Xumo Her Movies,yes
@@ -469,7 +466,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 915,Crime & Mystery,Crime Cults Killers,Tubi,id,400000095,,Crime Cults Killers,yes
 916,Crime & Mystery,Crime Scenes,Tubi,id,715949,,Crime Scenes,yes
 917,Crime & Mystery,Crime ThrillHer,Tubi,id,400000090,,Crime ThrillHer,yes
-918,Crime & Mystery,Crime Zone,Samsung TV Plus,id,USBB36000040M,,Crime Zone,yes
+918,Crime & Mystery,Crime Zone,Samsung TV Plus,id,USBB36000040M,,Crime Zone,no
 919,Crime & Mystery,Crimes Cults Killers,Samsung TV Plus,id,USBB5200022PY,,Crimes Cults Killers,no
 920,Crime & Mystery,Crimes Cults Killers,LG Channels,id,us-aenetworks_kriminal_1,,Crimes Cults Killers  by A&E,no
 921,Crime & Mystery,Crímenes Verdaderos,Roku Channel,id,c7fa77b283b35873aa6f08cf73d75b5f,,Crímenes Verdaderos,no
@@ -491,7 +488,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 937,Crime & Mystery,Lawless,Xumo,id,99951410,,Lawless by Lionsgate,yes
 938,Crime & Mystery,Live PD: Presents,Roku Channel,id,b3ad0323cd466f4bb0c04ef9bee54543,,Live PD: Presents,yes
 939,Crime & Mystery,Living with Evil,Tubi,id,400000067,,Living with Evil,yes
-940,Crime & Mystery,Locked Up Abroad,Samsung TV Plus,id,US4100035CD,,Locked Up Abroad,yes
+940,Crime & Mystery,Locked Up Abroad,Samsung TV Plus,id,US4100035CD,,Locked Up Abroad,no
 941,Crime & Mystery,Los Asesinatos de Midsomer,Roku Channel,id,b1c18b035b9f77a0cfeb169a61a8cc82,,Los Asesinatos de Midsomer,no
 942,Crime & Mystery,Misterios sin resolver,Roku Channel,id,f2bbfc9566f9519aad982aea41b95f83,,Misterios sin resolver,no
 943,Crime & Mystery,More True Crime,Pluto TV,id,6532e6a9bdf3cf000887ab29,,More True Crime,yes
@@ -511,7 +508,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 957,Crime & Mystery,The FBI Files,Tubi,id,400000091,,The FBI Files,yes
 958,Crime & Mystery,The First 48,Xumo,id,99951490,,The First 48 by A&E,no
 959,Crime & Mystery,The New Detectives,Pluto TV,id,5aea40b35126c2157123aa64,,The New Detectives,yes
-960,Crime & Mystery,To Catch a Smuggler,Samsung TV Plus,id,US4100030YU,,To Catch a Smuggler,yes
+960,Crime & Mystery,To Catch a Smuggler,Samsung TV Plus,id,US4100030YU,,To Catch a Smuggler,no
 961,Crime & Mystery,TruBlu,Samsung TV Plus,id,US37000036P,,TruBlu,yes
 962,Crime & Mystery,TruBlu Crime,Roku Channel,id,aee4056540505e84a2196b4d2263b745,,TruBlu Crime Channel,yes
 963,Crime & Mystery,True Crime Now,Tubi,id,700412,,True Crime Now,yes
@@ -524,7 +521,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 970,Crime & Mystery,World's Wildest Police Videos,Xumo,id,99951544,,World's Wildest Police Videos,yes
 971,Crime & Mystery,Crime TV,Xumo,id,99991384,,Xumo Free Crime TV,yes
 1000,Comedy,80's Sitcom Flashback,Plex,id,6a1610bebdf296985fd95603-65fca98c60dc164e8f272332,,80's Sitcom Flashback,yes
-1001,Comedy,According to Jim,Samsung TV Plus,id,US4100028ZF,,According to Jim,yes
+1001,Comedy,According to Jim,Samsung TV Plus,id,US4100028ZF,,According to Jim,no
 1002,Comedy,AFV with Alfonso Ribeiro,Samsung TV Plus,id,US4100038R9,,AFV with Alfonso Ribeiro,yes
 1003,Comedy,ALF,Roku Channel,id,fac7a914e241bef68c80c2f6e549458e,,ALF,yes
 1004,Comedy,Always Funny,Tubi,id,653208,,Always Funny,yes
@@ -549,7 +546,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 1023,Comedy,Fluffy TV,Roku Channel,id,5f6683cf9d615b5cb8b8545307bb86fb,,Fluffy TV,yes
 1024,Comedy,Frasier,Pluto TV,id,66ba495ffe11e5000881f049,,Frasier,yes
 1025,Comedy,Funny AF,Pluto TV,id,580e87ff497c73ba2f321dd3,,Funny AF,yes
-1026,Comedy,GET Comedy,Samsung TV Plus,id,US350000563,,GET Comedy,yes
+1026,Comedy,GET Comedy,Samsung TV Plus,id,US350000563,,GET Comedy,no
 1027,Comedy,Ghosts,Roku Channel,id,36d277b3bb5b51890d55fa2c72ccf324,,Ghosts,yes
 1028,Comedy,Gotham Comedy Live,Samsung TV Plus,id,US4700029QM,,Gotham Comedy Live,yes
 1029,Comedy,Hit Sitcoms,Xumo,id,99951397,,Hit Sitcoms,yes
@@ -557,7 +554,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 1031,Comedy,Jamie Kennedy Comedy,Local Now,id,LN_B55F1141-71F9-463B-9383-3FDF2F34B220,,Jamie Kennedy Comedy,yes
 1032,Comedy,Just for Laughs Gags,Xumo,id,99991204,,Just for Laughs Gags,yes
 1033,Comedy,Laff More,Xumo,id,99951232,,Laff More,yes
-1034,Comedy,Letterman TV,Samsung TV Plus,id,US4000004N1,,Letterman TV,yes
+1034,Comedy,Letterman TV,Samsung TV Plus,id,US4000004N1,,Letterman TV,no
 1035,Comedy,Lifetime Love & Drama,Roku Channel,id,8d8befc9060e861eb1bdd5b21c0403b3,,Lifetime Love & Drama,yes
 1036,Comedy,LOL Network,Roku Channel,id,52c137ae3cdc50768ad7ea3cdaf0f2f4,,LOL Network,yes
 1037,Comedy,MADtv,Tubi,id,400000301,,MADtv,yes
@@ -671,7 +668,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 1246,Reality,Intervention,Samsung TV Plus,id,USBD3500040WX,,Intervention by A&E,yes
 1247,Reality,Jersey Shore,Pluto TV,id,609bfa51fbecc1000733152e,,Jersey Shore,yes
 1248,Reality,Kitchen Nightmares,Samsung TV Plus,id,USBA3000042O6,,Kitchen Nightmares,yes
-1249,Reality,Life Below Zero,Samsung TV Plus,id,US4100033DZ,,Life Below Zero,yes
+1249,Reality,Life Below Zero,Samsung TV Plus,id,US4100033DZ,,Life Below Zero,no
 1250,Reality,Love & Hip Hop,Pluto TV,id,5d51ddf0369acdb278dfb05e,,Love & Hip Hop,yes
 1251,Reality,Love & Marriage,Tubi,id,715947,,Love & Marriage,yes
 1252,Reality,Love After Lockup We,Xumo,id,99951479,,Love After Lockup We TV,yes
@@ -742,6 +739,9 @@ number,group,name,service,match,key,mychannels,original_name,include
 1426,Game Shows,Wipeout Xtra,Tubi,id,670603,,Wipeout Xtra,yes
 1427,Game Shows,World Of Love Island,Roku Channel,id,dacd8aab4ff68232ed9d452aa706e2e6,,World Of Love Island,yes
 1428,Game Shows,Game Show TV,Xumo,id,99991639,,Xumo Free Game Show TV,yes
+1429,Game Shows,Cutlers Court,Samsung TV Plus,id,US700020AX,,Cutlers Court,yes
+1430,Game Shows,Divorce Court,Xumo,id,99991346,,Divorce Court,yes
+1431,Game Shows,Paternity Court,Roku Channel,id,ce8a61a75e94b71f52ad51ed92b1ec65,,Paternity Court,yes
 1500,Entertainment,ABC Entertains Australia,LG Channels,id,abcentertains_entert_US,,ABC Entertains Australia,yes
 1501,Entertainment,Acorn TV Mysteries,Roku Channel,id,fb8579bf16248ce630f42f129ed2e8d5,,Acorn TV Mysteries,yes
 1502,Entertainment,America's Got Talent,Roku Channel,id,3580b15015379c4256440b0e119d46ed,,America's Got Talent,yes
@@ -874,10 +874,10 @@ number,group,name,service,match,key,mychannels,original_name,include
 1658,Kids & Family,Nickelodeon en español,Pluto TV,id,5d8d08395f39465da6fb3ec4,,Nickelodeon en español,no
 1659,Kids & Family,Nickelodeon Pluto,Pluto TV,id,5ca673e0d0bd6c2689c94ce3,,Nickelodeon Pluto TV,yes
 1660,Kids & Family,Ninja Kidz TV,Roku Channel,id,9dd23031622757d1944e4782b2a192ef,,Ninja Kidz TV,yes
-1661,Kids & Family,PBS Kids,Samsung TV Plus,id,USBC3600013PC,,PBS Kids,yes
+1661,Kids & Family,PBS Kids,Samsung TV Plus,id,USBC3600013PC,,PBS Kids,no
 1662,Kids & Family,PBS Retro,LG Channels,id,pbsretro_pbsrt_US,,PBS Retro,yes
 1663,Kids & Family,Peppa Pig,Pluto TV,id,5d14fb6c84dd37df3b4290c5,,Peppa Pig,yes
-1664,Kids & Family,Peppa Pig & Friends,Samsung TV Plus,id,US4100025G5,,Peppa Pig & Friends,yes
+1664,Kids & Family,Peppa Pig & Friends,Samsung TV Plus,id,US4100025G5,,Peppa Pig & Friends,no
 1665,Kids & Family,pocket.watch Game-On,Samsung TV Plus,id,USBD12000153A,,pocket.watch Game-On,yes
 1666,Kids & Family,Pokémon,Pluto TV,id,6675c7868768aa0008d7f1c7,,Pokémon,yes
 1667,Kids & Family,Pokémon en español,Pluto TV,id,69e6be40fde57cd5ba562b29,,Pokémon en español,no
@@ -966,7 +966,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 1855,Science & History,Space Live Powered by Sen,Xumo,id,99951545,,Space Live Powered by Sen,no
 1856,Science & History,StarTalk,Samsung TV Plus,id,US52000010Y,,StarTalk,yes
 1857,Science & History,Stingray Naturescape,Roku Channel,id,d12329eda6e3dcc1f42ce2a350a4623d,,Stingray Naturescape,yes
-1858,Science & History,Incredible Dr. Pol,Samsung TV Plus,id,US4100031FK,,The Incredible Dr. Pol,yes
+1858,Science & History,Incredible Dr. Pol,Samsung TV Plus,id,US4100031FK,,The Incredible Dr. Pol,no
 1859,Science & History,Jack Hanna Channel,Xumo,id,99951491,,The Jack Hanna Channel,yes
 1860,Science & History,The Yorkshire Vet,Samsung TV Plus,id,US5000051IN,,The Yorkshire Vet,yes
 1861,Science & History,Yorkshire Vet & Friends,Xumo,id,99951347,,The Yorkshire Vet & Friends,yes
@@ -1036,7 +1036,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 1955,Food & Travel,PBS Food,Xumo,id,99951588,,PBS Food,yes
 1956,Food & Travel,PBS Travel,Xumo,id,99951587,,PBS Travel,yes
 1957,Food & Travel,Places & Spaces,Roku Channel,id,65506c44c9535b3787d255f333e7b1f7,,Places & Spaces,yes
-1958,Food & Travel,Plated,Samsung TV Plus,id,USBC1300008AZ,,Plated,yes
+1958,Food & Travel,Plated,Samsung TV Plus,id,USBC1300008AZ,,Plated,no
 1959,Food & Travel,Property & Reno,Xumo,id,99951221,,Property & Reno,yes
 1960,Food & Travel,Property Brothers,Xumo,id,99951537,,Property Brothers,yes
 1961,Food & Travel,QVC,Xumo,id,99991344,,QVC,no
@@ -1079,7 +1079,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 2102,Music,Classic Rock,Plex,id,6a1610bebdf296985fd95603-61aaa0cc784a2161d3caf7ff,,Classic Rock,yes
 2103,Music,Classica,Pluto TV,id,5f779951372da90007fd45e8,,Classica,no
 2104,Music,CMT Equal Play,Pluto TV,id,5f68f53eb1e5800007390bf8,,CMT Equal Play,yes
-2105,Music,Dark Shadows,Pluto TV,id,5ef3958c66ac540007d6e6a7,,Dark Shadows,yes
+2105,Music,Dark Shadows,Pluto TV,id,5ef3958c66ac540007d6e6a7,,Dark Shadows,no
 2106,Music,Driftwood,Xumo,id,99951585,,Driftwood,yes
 2107,Music,FreeTV Hits,Roku Channel,id,842a871b7e9a7817c72209b689e43254,,FreeTV Hits,no
 2108,Music,Growing Up Hip Hop WeTV,Roku Channel,id,a4d5fe37a0f5592dee5dbbb242d73fac,,Growing Up Hip Hop WeTV,yes
@@ -1100,7 +1100,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 2123,Music,Qello Concerts by Stingray,Samsung TV Plus,id,USBD3500024YB,,Qello Concerts by Stingray,no
 2124,Music,Qwest TV,Plex,id,6a1610bebdf296985fd95603-60b0f65c0c8ffb002c821a75,,Qwest TV,yes
 2125,Music,Shades of Black,Roku Channel,id,34e2d8f442ab5fa3aed29436c2f8ed63,,Shades of Black,yes
-2126,Music,SMTOWN,Samsung TV Plus,id,US10000135V,,SMTOWN,yes
+2126,Music,SMTOWN,Samsung TV Plus,id,US10000135V,,SMTOWN,no
 2127,Music,Stingray 2000s,LG Channels,id,Stingray232ADS,,Stingray 2000s,yes
 2128,Music,Stingray Cityscapes,Roku Channel,id,73991aa61267bcc005a855c7b6303afc,,Stingray Cityscapes,yes
 2129,Music,Stingray Classic Rock,Samsung TV Plus,id,USBD35000180U,,Stingray Classic Rock,no
@@ -1357,9 +1357,9 @@ number,group,name,service,match,key,mychannels,original_name,include
 5020,More Channels,Adventure Zone Sports,FreeLiveSports,name,Adventure Zone Sports Network,,Adventure Zone Sports Network,yes
 5021,More Channels,Air and Space .US,TCL tv+,name,Air and Space .US -TCL,,Air and Space .US,yes
 5022,More Channels,Air & Space .US alt,TCL tv+,name,Air and Space .US alt -TCL,,Air and Space .US alt,no
-5023,More Channels,Alien Nation,Vizio WatchFree+,name,Alien Nation,,Alien Nation,yes
+5023,More Channels,Alien Nation,Vizio WatchFree+,name,Alien Nation,,Alien Nation,no
 5024,More Channels,American Stories,Local Now,name,American Stories Network,,American Stories Network,yes
-5025,More Channels,Aqui y Ahora,Vizio WatchFree+,name,Aqui y Ahora,,Aqui y Ahora,yes
+5025,More Channels,Aqui y Ahora,Vizio WatchFree+,name,Aqui y Ahora,,Aqui y Ahora,no
 5026,More Channels,Artflix .US,TCL tv+,name,Artflix .US -TCL,,Artflix .US,yes
 5027,More Channels,Awe,TCL tv+,name,Awe -TCL,,Awe,yes
 5028,More Channels,Awe Plus,TCL tv+,name,Awe Plus -TCL,,Awe Plus,yes
@@ -1374,20 +1374,20 @@ number,group,name,service,match,key,mychannels,original_name,include
 5037,More Channels,Beyblade German French Spanish,TCL tv+,name,Beyblade -TCL German French Spanish (Geo),,Beyblade German French Spanish (Geo),no
 5038,More Channels,Big 12 Network,FreeLiveSports,name,Big 12 Network,,Big 12 Network,yes
 5039,More Channels,Bigtjme .US,TCL tv+,name,Bigtjme .US -TCL,,Bigtjme .US,yes
-5040,More Channels,Bodas+,Local Now,name,Bodas+,,Bodas+,yes
+5040,More Channels,Bodas+,Local Now,name,Bodas+,,Bodas+,no
 5041,More Channels,Bonanza-Billies TV,Vizio WatchFree+,name,Bonanza-Billies TV,,Bonanza-Billies TV,yes
 5042,More Channels,Boston 25,Xumo,name,Boston 25,,Boston 25,yes
 5043,More Channels,Brat TV other alt,TCL tv+,name,Brat TV other alt -TCL,,Brat TV other alt,no
 5044,More Channels,Breaking News,Vizio WatchFree+,name,Breaking News,,Breaking News,yes
 5045,More Channels,Business Rockstars,DistroTV,name,Business Rockstars,,Business Rockstars,yes
-5046,More Channels,Camino al Cielo,Vizio WatchFree+,name,Camino al Cielo,,Camino al Cielo,yes
-5047,More Channels,CBS 47 Fox 30 Action News Jax,Vizio WatchFree+,name,CBS 47 Fox 30 Action News Jax,,CBS 47 Fox 30 Action News Jax,yes
+5046,More Channels,Camino al Cielo,Vizio WatchFree+,name,Camino al Cielo,,Camino al Cielo,no
+5047,More Channels,CBS 47 Fox 30 Action News Jax,Vizio WatchFree+,name,CBS 47 Fox 30 Action News Jax,,CBS 47 Fox 30 Action News Jax,no
 5048,More Channels,CBS 6,Vizio WatchFree+,name,CBS 6,,CBS 6,yes
-5049,More Channels,CGTN Global Biz,DistroTV,name,CGTN Global Biz,,CGTN Global Biz,yes
+5049,More Channels,CGTN Global Biz,DistroTV,name,CGTN Global Biz,,CGTN Global Biz,no
 5050,More Channels,Charlie .US,TCL tv+,name,Charlie .US -TCL,,Charlie .US,yes
 5051,More Channels,Chef vs Chef,Vizio WatchFree+,name,Chef vs Chef,,Chef vs Chef,no
-5052,More Channels,China Travel,DistroTV,name,China Travel,,China Travel,yes
-5053,More Channels,Chip & Jo: Feels Like Home,Vizio WatchFree+,name,Chip & Jo: Feels Like Home,,Chip & Jo: Feels Like Home,yes
+5052,More Channels,China Travel,DistroTV,name,China Travel,,China Travel,no
+5053,More Channels,Chip & Jo: Feels Like Home,Vizio WatchFree+,name,Chip & Jo: Feels Like Home,,Chip & Jo: Feels Like Home,no
 5054,More Channels,Cine Friki,TCL tv+,name,Cine Friki -TCL (Geo),,Cine Friki (Geo),no
 5055,More Channels,Cine Western,TCL tv+,name,Cine Western -TCL,,Cine Western,no
 5056,More Channels,Cinelife,TCL tv+,name,Cinelife -TCL,,Cinelife,yes
@@ -1401,17 +1401,17 @@ number,group,name,service,match,key,mychannels,original_name,include
 5064,More Channels,DECLASSIFIED,Local Now,name,DECLASSIFIED,,DECLASSIFIED,yes
 5065,More Channels,Delicious Eats,Vizio WatchFree+,name,Delicious Eats,,Delicious Eats,no
 5066,More Channels,Denver 7,Vizio WatchFree+,name,Denver 7,,Denver 7,yes
-5067,More Channels,DFB Play,FreeLiveSports,name,DFB Play,,DFB Play,yes
+5067,More Channels,DFB Play,FreeLiveSports,name,DFB Play,,DFB Play,no
 5068,More Channels,Dia TV,TCL tv+,name,Dia TV -TCL,,Dia TV,no
-5069,More Channels,Discovering China,DistroTV,name,Discovering China,,Discovering China,yes
+5069,More Channels,Discovering China,DistroTV,name,Discovering China,,Discovering China,no
 5070,More Channels,Docsville,TCL tv+,name,Docsville -TCL,,Docsville,yes
 5071,More Channels,Dont tell the Bride,TCL tv+,name,Dont tell the Bride -TCL,,Dont tell the Bride,yes
 5072,More Channels,Dungeon TV,DistroTV,name,Dungeon TV,,Dungeon TV,yes
 5073,More Channels,eClutch Access,FreeLiveSports,name,eClutch Access,,eClutch Access,yes
 5074,More Channels,Emotional,TCL tv+,name,Emotional -TCL,,Emotional,yes
 5075,More Channels,Escape TV,FreeLiveSports,name,Escape TV,,Escape TV,yes
-5076,More Channels,Eurovision Sport,FreeLiveSports,name,Eurovision Sport,,Eurovision Sport,yes
-5077,More Channels,Expedientes Sobrenaturales,Local Now,name,Expedientes Sobrenaturales,,Expedientes Sobrenaturales,yes
+5076,More Channels,Eurovision Sport,FreeLiveSports,name,Eurovision Sport,,Eurovision Sport,no
+5077,More Channels,Expedientes Sobrenaturales,Local Now,name,Expedientes Sobrenaturales,,Expedientes Sobrenaturales,no
 5078,More Channels,FilmRise Sci-Fi,Vizio WatchFree+,name,FilmRise Sci-Fi,,FilmRise Sci-Fi,yes
 5079,More Channels,Filmrise Z Nation,Vizio WatchFree+,name,Filmrise Z Nation,,Filmrise Z Nation,yes
 5080,More Channels,Filmzie,TCL tv+,name,Filmzie -TCL,,Filmzie,yes
@@ -1422,7 +1422,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 5085,More Channels,Four In A Bed,Vizio WatchFree+,name,Four In A Bed,,Four In A Bed,yes
 5086,More Channels,Fox 10 News Mobile-Pensacola,Vizio WatchFree+,name,Fox 10 News Mobile-Pensacola,,Fox 10 News Mobile-Pensacola,yes
 5087,More Channels,FOX 12 Oregon,Vizio WatchFree+,name,FOX 12 Oregon,,FOX 12 Oregon,yes
-5088,More Channels,FOX 13 News,Vizio WatchFree+,name,FOX 13 News,,FOX 13 News,yes
+5088,More Channels,FOX 13 Salt Lake City,Vizio WatchFree+,name,FOX 13 News,,FOX 13 News,yes
 5089,More Channels,FOX 17,Vizio WatchFree+,name,FOX 17,,FOX 17,yes
 5090,More Channels,Fox 5 KVVU Las Vegas,Vizio WatchFree+,name,Fox 5 KVVU Las Vegas,,Fox 5 KVVU Las Vegas,yes
 5091,More Channels,Fox 8 Local First New Orleans,Vizio WatchFree+,name,Fox 8 Local First New Orleans,,Fox 8 Local First New Orleans,yes
@@ -1434,7 +1434,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 5097,More Channels,FOX LOCAL Detroit,Xumo,name,FOX LOCAL Detroit,,FOX LOCAL Detroit,yes
 5098,More Channels,FOX LOCAL Houston,Xumo,name,FOX LOCAL Houston,,FOX LOCAL Houston,yes
 5099,More Channels,FOX LOCAL Milwaukee,Xumo,name,FOX LOCAL Milwaukee,,FOX LOCAL Milwaukee,yes
-5100,More Channels,FOX LOCAL Minneapolis,Vizio WatchFree+,name,FOX LOCAL Minneapolis,,FOX LOCAL Minneapolis,yes
+5100,More Channels,FOX LOCAL Minneapolis,Vizio WatchFree+,name,FOX LOCAL Minneapolis,,FOX LOCAL Minneapolis,no
 5101,More Channels,FOX LOCAL Minnesota,Xumo,name,FOX LOCAL Minnesota,,FOX LOCAL Minnesota,yes
 5102,More Channels,FOX LOCAL Orlando,Xumo,name,FOX LOCAL Orlando,,FOX LOCAL Orlando,yes
 5103,More Channels,FOX LOCAL Philadelphia,Xumo,name,FOX LOCAL Philadelphia,,FOX LOCAL Philadelphia,yes
@@ -1450,16 +1450,16 @@ number,group,name,service,match,key,mychannels,original_name,include
 5113,More Channels,FREE Vibes Nature,Vizio WatchFree+,name,FREE Vibes Nature,,FREE Vibes Nature,yes
 5114,More Channels,FREE Vibes Scenery,Vizio WatchFree+,name,FREE Vibes Scenery,,FREE Vibes Scenery,yes
 5115,More Channels,FREE Western,Vizio WatchFree+,name,FREE Western Network,,FREE Western Network,yes
-5116,More Channels,Freemovies Plus,TCL tv+,name,Freemovies Plus -TCL (Geo),,Freemovies Plus (Geo),yes
-5117,More Channels,FreeTV Drama,Vizio WatchFree+,name,FreeTV Drama,,FreeTV Drama,yes
+5116,More Channels,Freemovies Plus,TCL tv+,name,Freemovies Plus -TCL (Geo),,Freemovies Plus (Geo),no
+5117,More Channels,FreeTV Drama,Vizio WatchFree+,name,FreeTV Drama,,FreeTV Drama,no
 5118,More Channels,Frequence Novelas,TCL tv+,name,Frequence Novelas -TCL (Geo),,Frequence Novelas (Geo),no
 5119,More Channels,Frightflix,DistroTV,name,Frightflix,,Frightflix,yes
 5120,More Channels,Futcrunch,Vizio WatchFree+,name,Futcrunch,,Futcrunch,yes
 5121,More Channels,Galxy TV,DistroTV,name,Galxy TV,,Galxy TV,yes
-5122,More Channels,GCTV,FreeLiveSports,name,GCTV,,GCTV,yes
+5122,More Channels,GCTV,FreeLiveSports,name,GCTV,,GCTV,no
 5123,More Channels,Goal TV,FreeLiveSports,name,Goal TV,,Goal TV,yes
 5124,More Channels,Golf Network,FreeLiveSports,name,Golf Network,,Golf Network,yes
-5125,More Channels,Grandes Parejas,Vizio WatchFree+,name,Grandes Parejas,,Grandes Parejas,yes
+5125,More Channels,Grandes Parejas,Vizio WatchFree+,name,Grandes Parejas,,Grandes Parejas,no
 5126,More Channels,Grjngo .US,TCL tv+,name,Grjngo .US -TCL,,Grjngo .US,no
 5127,More Channels,Hardcore Pawn,TCL tv+,name,Hardcore Pawn -TCL,,Hardcore Pawn,yes
 5128,More Channels,Historia Y Vida,TCL tv+,name,Historia Y Vida -TCL (Geo),,Historia Y Vida (Geo),no
@@ -1477,16 +1477,16 @@ number,group,name,service,match,key,mychannels,original_name,include
 5140,More Channels,Idaho News 6,Vizio WatchFree+,name,Idaho News 6,,Idaho News 6,yes
 5141,More Channels,Inside Arm Wrestling,FreeLiveSports,name,Inside Arm Wrestling,,Inside Arm Wrestling,yes
 5142,More Channels,InTrouble,FreeLiveSports,name,InTrouble,,InTrouble,yes
-5143,More Channels,JP News,TCL tv+,name,JP News -TCL (Geo),,JP News (Geo),yes
+5143,More Channels,JP News,TCL tv+,name,JP News -TCL (Geo),,JP News (Geo),no
 5144,More Channels,Kanal D Drama,TCL tv+,name,Kanal D Drama -TCL,,Kanal D Drama,no
 5145,More Channels,KATC TV3,Vizio WatchFree+,name,KATC TV3,,KATC TV3,yes
 5146,More Channels,KBZK News,Vizio WatchFree+,name,KBZK News,,KBZK News,yes
 5147,More Channels,KCTV5 News Kansas City,Vizio WatchFree+,name,KCTV5 News Kansas City,,KCTV5 News Kansas City,yes
 5148,More Channels,KGUN 9,Vizio WatchFree+,name,KGUN 9,,KGUN 9,yes
 5149,More Channels,Kidoodle.TV,Vizio WatchFree+,name,Kidoodle.TV,,Kidoodle.TV,yes
-5150,More Channels,KMOV4 News Missouri,Vizio WatchFree+,name,KMOV4 News Missouri,,KMOV4 News Missouri,yes
+5150,More Channels,KMOV4 News Missouri,Vizio WatchFree+,name,KMOV4 News Missouri,,KMOV4 News Missouri,no
 5151,More Channels,KOAA News5,Vizio WatchFree+,name,KOAA News5,,KOAA News5,yes
-5152,More Channels,Kozoom,FreeLiveSports,name,Kozoom,,Kozoom,yes
+5152,More Channels,Kozoom,FreeLiveSports,name,Kozoom,,Kozoom,no
 5153,More Channels,KPAX,Vizio WatchFree+,name,KPAX,,KPAX,yes
 5154,More Channels,KRIS 6 News,Vizio WatchFree+,name,KRIS 6 News,,KRIS 6 News,yes
 5155,More Channels,KRTV News,Vizio WatchFree+,name,KRTV News,,KRTV News,yes
@@ -1511,7 +1511,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 5174,More Channels,Lovenature Spanish,TCL tv+,name,Lovenature Spanish -TCL (Geo),,Lovenature Spanish (Geo),no
 5175,More Channels,Lovewine,TCL tv+,name,Lovewine -TCL (Geo),,Lovewine (Geo),yes
 5176,More Channels,Magellan TV Now,TCL tv+,name,Magellan TV Now -TCL (Geo),,Magellan TV Now (Geo),yes
-5177,More Channels,Mansa Mix,TCL tv+,name,Mansa Mix -TCL,,Mansa Mix,yes
+5177,More Channels,Mansa Mix,TCL tv+,name,Mansa Mix -TCL,,Mansa Mix,no
 5178,More Channels,Masterchef Brazil,TCL tv+,name,Masterchef Brazil -TCL (Geo),,Masterchef Brazil (Geo),no
 5179,More Channels,Masterchef Mexico,TCL tv+,name,Masterchef Mexico -TCL,,Masterchef Mexico,no
 5180,More Channels,Mav TV Brasil,TCL tv+,name,Mav TV Brasil -TCL (Geo),,Mav TV Brasil (Geo),no
@@ -1536,11 +1536,11 @@ number,group,name,service,match,key,mychannels,original_name,include
 5199,More Channels,Mytime Movie Network German,TCL tv+,name,Mytime Movie Network German -TCL (Geo),,Mytime Movie Network German (Geo),no
 5200,More Channels,Mytime Movie Network Spanish c3,TCL tv+,name,Mytime Movie Network Spanish c3 -TCL (Geo),,Mytime Movie Network Spanish c3 (Geo),no
 5201,More Channels,MyTime Movie Network Spanish c7,TCL tv+,name,MyTime Movie Network Spanish c7 -TCL (Geo),,MyTime Movie Network Spanish c7 (Geo),no
-5202,More Channels,Nature moments by Love Nature,TCL tv+,name,Nature moments by Love Nature -TCL (Geo),,Nature moments by Love Nature (Geo),yes
+5202,More Channels,Nature moments by Love Nature,TCL tv+,name,Nature moments by Love Nature -TCL (Geo),,Nature moments by Love Nature (Geo),no
 5203,More Channels,Nature Time Spanish,TCL tv+,name,Nature Time Spanish -TCL (Geo),,Nature Time Spanish (Geo),no
 5204,More Channels,Natureleza Salvaje,TCL tv+,name,Natureleza Salvaje -TCL (Geo),,Natureleza Salvaje (Geo),no
 5205,More Channels,NBC26,Vizio WatchFree+,name,NBC26,,NBC26,yes
-5206,More Channels,Negocios TV,DistroTV,name,Negocios TV,,Negocios TV,yes
+5206,More Channels,Negocios TV,DistroTV,name,Negocios TV,,Negocios TV,no
 5207,More Channels,New Brasil,TCL tv+,name,New Brasil -TCL (Geo),,New Brasil (Geo),no
 5208,More Channels,News 5,Vizio WatchFree+,name,News 5,,News 5,yes
 5209,More Channels,NewsChannel 5,Vizio WatchFree+,name,NewsChannel 5,,NewsChannel 5,yes
@@ -1555,7 +1555,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 5218,More Channels,Outdoor Action TV,TCL tv+,name,Outdoor Action TV -TCL,,Outdoor Action TV,yes
 5219,More Channels,PBS History,TCL tv+,name,PBS History -TCL,,PBS History,yes
 5220,More Channels,PBTV,TCL tv+,name,PBTV -TCL (Geo),,PBTV (Geo),yes
-5221,More Channels,Pelimex,TCL tv+,name,Pelimex -TCL,,Pelimex,yes
+5221,More Channels,Pelimex,TCL tv+,name,Pelimex -TCL,,Pelimex,no
 5222,More Channels,Petclub,TCL tv+,name,Petclub -TCL,,Petclub,yes
 5223,More Channels,POWERtube TV,FreeLiveSports,name,POWERtube TV,,POWERtube TV,yes
 5224,More Channels,Q2 News,Vizio WatchFree+,name,Q2 News,,Q2 News,yes
@@ -1577,12 +1577,12 @@ number,group,name,service,match,key,mychannels,original_name,include
 5240,More Channels,Shockwave,Vizio WatchFree+,name,Shockwave,,Shockwave,yes
 5241,More Channels,ShopTV,Vizio WatchFree+,name,ShopTV,,ShopTV,no
 5242,More Channels,Slopes TV,DistroTV,name,Slopes TV,,Slopes TV,yes
-5243,More Channels,Smurf TV,DistroTV,name,Smurf TV,,Smurf TV,yes
-5244,More Channels,Sony One Dramon,Vizio WatchFree+,name,Sony One Dramon,,Sony One Dramon,yes
+5243,More Channels,Smurf TV,DistroTV,name,Smurf TV,,Smurf TV,no
+5244,More Channels,Sony One Dramon,Vizio WatchFree+,name,Sony One Dramon,,Sony One Dramon,no
 5245,More Channels,Space Science Now,TCL tv+,name,Space Science Now -TCL (Geo),,Space Science Now (Geo),yes
 5246,More Channels,Sports Fishing,FreeLiveSports,name,Sports Fishing,,Sports Fishing,yes
 5247,More Channels,Ssundee,Vizio WatchFree+,name,Ssundee,,Ssundee,yes
-5248,More Channels,Star Cinema,TCL tv+,name,Star Cinema -TCL,,Star Cinema,yes
+5248,More Channels,Star Cinema,TCL tv+,name,Star Cinema -TCL,,Star Cinema,no
 5249,More Channels,Stash Black Stories,TCL tv+,name,Stash Black Stories -TCL (Geo),,Stash Black Stories (Geo),yes
 5250,More Channels,Stash Screams & Scares,TCL tv+,name,Stash Screams and Scares -TCL (Geo),,Stash Screams and Scares (Geo),yes
 5251,More Channels,Stash The Classics,TCL tv+,name,Stash The Classics -TCL (Geo),,Stash The Classics (Geo),yes
@@ -1604,7 +1604,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 5267,More Channels,The Dead Files,Vizio WatchFree+,name,The Dead Files,,The Dead Files,yes
 5268,More Channels,Design Network alt,TCL tv+,name,The Design Network alt -TCL,,The Design Network alt,no
 5269,More Channels,Homestyle Channel .US,TCL tv+,name,The Homestyle Channel .US -TCL,,The Homestyle Channel .US,yes
-5270,More Channels,Original Harlem Globetrotters,Vizio WatchFree+,name,The Original Harlem Globetrotters,,The Original Harlem Globetrotters,yes
+5270,More Channels,Original Harlem Globetrotters,Vizio WatchFree+,name,The Original Harlem Globetrotters,,The Original Harlem Globetrotters,no
 5271,More Channels,Price is Right: Drew Carey,Vizio WatchFree+,name,The Price is Right: Drew Carey,,The Price is Right: Drew Carey,yes
 5272,More Channels,The Royalty Family,Vizio WatchFree+,name,The Royalty Family,,The Royalty Family,yes
 5273,More Channels,The Tennis Channel,FreeLiveSports,name,The Tennis Channel,,The Tennis Channel,yes
@@ -1612,7 +1612,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 5275,More Channels,Timeline,TCL tv+,name,Timeline -TCL,,Timeline,yes
 5276,More Channels,TMJ4,Vizio WatchFree+,name,TMJ4,,TMJ4,no
 5277,More Channels,Todo Novelas,TCL tv+,name,Todo Novelas -TCL (Geo),,Todo Novelas (Geo),no
-5278,More Channels,Top Barca,FreeLiveSports,name,Top Barca,,Top Barca,yes
+5278,More Channels,Top Barca,FreeLiveSports,name,Top Barca,,Top Barca,no
 5279,More Channels,Top Barca en Espanyol,FreeLiveSports,name,Top Barca en Espanyol,,Top Barca en Espanyol,no
 5280,More Channels,Top True Crime,TCL tv+,name,Top True Crime -TCL,,Top True Crime,yes
 5281,More Channels,TRACE Sport Stars,FreeLiveSports,name,TRACE Sport Stars,,TRACE Sport Stars,yes
@@ -1622,8 +1622,8 @@ number,group,name,service,match,key,mychannels,original_name,include
 5285,More Channels,Travel XP .US,TCL tv+,name,Travel XP .US -TCL,,Travel XP .US,yes
 5286,More Channels,Trinity Broadcasting,Vizio WatchFree+,name,Trinity Broadcasting Network,,Trinity Broadcasting Network,no
 5287,More Channels,True Crime Now C9 not fully identified,TCL tv+,name,True Crime Now C9 not fully identified -TCL (Geo),,True Crime Now C9 not fully identified (Geo),no
-5288,More Channels,TuDiscovery,Local Now,name,TuDiscovery,,TuDiscovery,yes
-5289,More Channels,TyC Sports,FreeLiveSports,name,TyC Sports,,TyC Sports,yes
+5288,More Channels,TuDiscovery,Local Now,name,TuDiscovery,,TuDiscovery,no
+5289,More Channels,TyC Sports,FreeLiveSports,name,TyC Sports,,TyC Sports,no
 5290,More Channels,Unbeaten,TCL tv+,name,Unbeaten -TCL,,Unbeaten,yes
 5291,More Channels,Unique Lives,Local Now,name,Unique Lives,,Unique Lives,yes
 5292,More Channels,United Fight Alliance -AU,TCL tv+,name,United Fight Alliance -AU -TCL,,United Fight Alliance -AU,no
@@ -1650,24 +1650,24 @@ number,group,name,service,match,key,mychannels,original_name,include
 5313,More Channels,Wedo TV Movies Norwegien subtitles,TCL tv+,name,Wedo TV Movies Norwegien subtitles -TCL,,Wedo TV Movies Norwegien subtitles,no
 5314,More Channels,Wedo TV Movies Swedish subtitles,TCL tv+,name,Wedo TV Movies Swedish subtitles -TCL,,Wedo TV Movies Swedish subtitles,no
 5315,More Channels,Wedotv Sports,TCL tv+,name,Wedotv Sports -TCL,,Wedotv Sports,yes
-5316,More Channels,WFSB Eyewitness News 3 Connecticut,Vizio WatchFree+,name,WFSB Eyewitness News 3 Connecticut,,WFSB Eyewitness News 3 Connecticut,yes
-5317,More Channels,WFTV 9 Central Florida,Vizio WatchFree+,name,WFTV 9 Central Florida,,WFTV 9 Central Florida,yes
+5316,More Channels,WFSB Eyewitness News 3 Connecticut,Vizio WatchFree+,name,WFSB Eyewitness News 3 Connecticut,,WFSB Eyewitness News 3 Connecticut,no
+5317,More Channels,WFTV 9 Central Florida,Vizio WatchFree+,name,WFTV 9 Central Florida,,WFTV 9 Central Florida,no
 5318,More Channels,WFTV Orlando,Xumo,name,WFTV Orlando,,WFTV Orlando,yes
 5319,More Channels,WHIO Dayton,Xumo,name,WHIO Dayton,,WHIO Dayton,yes
 5320,More Channels,WHIO TV 7 Dayton,Vizio WatchFree+,name,WHIO TV 7 Dayton,,WHIO TV 7 Dayton,no
-5321,More Channels,Witz .US,TCL tv+,name,Witz .US -TCL,,Witz .US,yes
+5321,More Channels,Witz .US,TCL tv+,name,Witz .US -TCL,,Witz .US,no
 5322,More Channels,Witz .US alt,TCL tv+,name,Witz .US alt -TCL,,Witz .US alt,no
 5323,More Channels,WKYT Lexington,Vizio WatchFree+,name,WKYT Lexington,,WKYT Lexington,yes
 5324,More Channels,Women's Sport,TCL tv+,name,Women's Sport Network,,Women's Sport Network,no
 5325,More Channels,World Chase Tag,FreeLiveSports,name,World Chase Tag,,World Chase Tag,yes
 5326,More Channels,World of Freesports,FreeLiveSports,name,World of Freesports,,World of Freesports,yes
-5327,More Channels,WPT Spain,FreeLiveSports,name,WPT Spain,,WPT Spain,yes
+5327,More Channels,WPT Spain,FreeLiveSports,name,WPT Spain,,WPT Spain,no
 5328,More Channels,WPTV NewsChannel 5,Vizio WatchFree+,name,WPTV NewsChannel 5,,WPTV NewsChannel 5,yes
 5329,More Channels,WPXI 11 Pittsburgh,Vizio WatchFree+,name,WPXI 11 Pittsburgh,,WPXI 11 Pittsburgh,no
 5330,More Channels,WPXI Pittsburgh,Xumo,name,WPXI Pittsburgh,,WPXI Pittsburgh,yes
 5331,More Channels,WSB Atlanta,Xumo,name,WSB Atlanta,,WSB Atlanta,yes
 5332,More Channels,WSB-TV 2 Atlanta,Vizio WatchFree+,name,WSB-TV 2 Atlanta,,WSB-TV 2 Atlanta,no
-5333,More Channels,WSMV4 News Nashville,Vizio WatchFree+,name,WSMV4 News Nashville,,WSMV4 News Nashville,yes
+5333,More Channels,WSMV4 News Nashville,Vizio WatchFree+,name,WSMV4 News Nashville,,WSMV4 News Nashville,no
 5334,More Channels,WSOC 9 Charlotte,Vizio WatchFree+,name,WSOC 9 Charlotte,,WSOC 9 Charlotte,no
 5335,More Channels,WTKR News 3,Vizio WatchFree+,name,WTKR News 3,,WTKR News 3,yes
 5336,More Channels,WVLT 8 Knoxville,Vizio WatchFree+,name,WVLT 8 Knoxville,,WVLT 8 Knoxville,yes
@@ -1681,6 +1681,6 @@ number,group,name,service,match,key,mychannels,original_name,include
 5344,More Channels,Xploration Station,TCL tv+,name,Xploration Station -TCL,,Xploration Station,yes
 5345,More Channels,Sci-Fi & Fantasy Movies,Vizio WatchFree+,name,Xumo Free Sci-Fi & Fantasy Movies,,Xumo Free Sci-Fi & Fantasy Movies,yes
 5346,More Channels,Xumo Horror & Thriller,Vizio WatchFree+,name,Xumo Horror & Thriller,,Xumo Horror & Thriller,yes
-5347,More Channels,Yaquelaverite,TCL tv+,name,Yaquelaverite -TCL,,Yaquelaverite,yes
+5347,More Channels,Yaquelaverite,TCL tv+,name,Yaquelaverite -TCL,,Yaquelaverite,no
 5348,More Channels,Young Hollywood,TCL tv+,name,Young Hollywood -TCL,,Young Hollywood,yes
 5349,More Channels,ZHC,Vizio WatchFree+,name,ZHC,,ZHC,yes
