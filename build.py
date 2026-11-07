@@ -129,6 +129,15 @@ GUIDE_DROP = {
 
 MAX_URL = 1000   # IPTV Simple cuts stream URLs at ~1024 characters; cut URLs fail (HTTP 400). Tested 2026-11-01.
 
+# Xumo live links (added 2026-11-06). For some Xumo channels the Xumo playlist links to ONE saved episode (the one on air
+# when that playlist was made, once a day), so the channel replayed that episode instead of the channel. For those, ask
+# Xumo's own channel info for the channel's live link: one request per such channel (~53), 8 at a time, 20 s timeout.
+# The live link is only used if it answers like a stream; otherwise the saved-episode link stays (as before).
+# The guide is unchanged: the feed's times matched the live streams' position (PC check 2026-11-06).
+# To remove: delete this block, xumo_live_link() and the "Xumo live links" block in main().
+XUMO_SAVED_RE = re.compile(r"^https://live-content\.xumo\.com/\d+/content/XM[0-9A-Z]+/")
+XUMO_CHANNEL_INFO = "https://valencia-app-mds.xumo.com/v2/channels/channel/{}/broadcast.json?hour={}"
+
 # Show pictures: a listing gets the first SHARP one (at least 720 px tall and wider than tall) of
 # 1. the feed's own picture, 2. Pluto movies' widescreen poster16_9, 3. Xumo's 1920x1080 picture by id,
 # 4. TVmaze's wide picture (same name + year/channel check), 5. the themed backdrop or channel card (no_art_tag).
@@ -199,6 +208,16 @@ def check_stream(c):
         return f"HTTP {e.code}"
     except Exception as e:
         return type(e).__name__
+
+def xumo_live_link(c, hour):
+    """The channel's live link from Xumo's channel info, or None. Placeholders like [IFA] are left empty, [PLATFORM] = web."""
+    try:
+        u = json.loads(fetch(XUMO_CHANNEL_INFO.format(c["id"], hour), timeout=20).decode()).get("ssaiStreamUrl") or ""
+        if not u.startswith("https://"): return None
+        u = shorten_url(re.sub(r"\[[^\]]*\]", "", u.replace("[PLATFORM]", "web")))
+        return u if not check_stream(dict(c, url=u)) else None
+    except Exception:
+        return None
 
 def fillers(start, end, title, desc, step_hours=1):
     """'Live: <name>' blocks covering [start, end), split on whole hours."""
@@ -514,6 +533,17 @@ def main():
             entries.append(dict(num=num, p=p, c=c, gid=gid, svc=svc, src_id=c["id"] if p["match"] == "id" else ""))
         report.append(f"{svc}: {found}/{len(plist)} channels found")
     entries.sort(key=lambda e: e["num"])
+
+    # ---------- Xumo live links instead of saved episodes (see XUMO_SAVED_RE above)
+    saved = [e for e in entries if e["svc"] == "Xumo" and e["c"]["id"] and XUMO_SAVED_RE.match(e["c"]["url"])]
+    if saved:
+        with cf.ThreadPoolExecutor(8) as ex:
+            links = list(ex.map(lambda e: xumo_live_link(e["c"], now.hour), saved))
+        for e, u in zip(saved, links):
+            if u: e["c"] = dict(e["c"], url=u)
+        kept = [e["p"]["name"] for e, u in zip(saved, links) if not u]
+        report.append(f"Xumo live links: {len(saved) - len(kept)} of {len(saved)} saved-episode links replaced"
+                      + (f"; kept the saved episode for: {', '.join(kept)}" if kept else ""))
 
     # ---------- stream health (auto-hide)
     prev = {}

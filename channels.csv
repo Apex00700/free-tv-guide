@@ -709,7 +709,7 @@ number,group,name,service,match,key,mychannels,original_name,include
 1287,Reality,VH1 Queens of Reality,Pluto TV,id,66abefe5d2d50d00082c7d12,,VH1 Queens of Reality,yes
 1288,Reality,Warner Bros. TV Say Yes to the Dress,Pluto TV,id,6532e8342cf13100083b404c,,Warner Bros. TV Say Yes to the Dress,no
 1289,Reality,Wicked Tuna,Pluto TV,id,686c2677ed17cf4c900a496d,,Wicked Tuna,yes
-1290,Reality,Reality TV,Xumo,id,99991364,,Xumo Free Reality TV,yes
+1290,Reality,Reality TV,Xumo,id,99991364,,Xumo Free Reality TV,no
 1400,Game Shows,25 Words or Less,Xumo,id,99991659,,25 Words or Less,yes
 1401,Game Shows,American Gladiators,Plex,id,6a1610bebdf296985fd95603-6876f9be20555588ef322221,,American Gladiators by MGM,yes
 1402,Game Shows,BBC Game Shows,Plex,id,6a1610bebdf296985fd95603-656229e4b7d737841f30a4fb,,BBC Game Shows,yes
