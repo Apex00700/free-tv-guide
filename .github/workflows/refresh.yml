@@ -42,6 +42,15 @@ jobs:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: python trending.py
 
+      # Daily GENRE TILE pictures for the Apex On Demand home/hub (Tony 2026-11-09): 7 darkened tile pictures + genre.json in site/ (site/genre/<slug>.jpg).
+      # Same secret, read only from the environment (never printed). Without the secret or if TMDB cannot be reached, yesterday's pictures are carried forward
+      # (if under 72 h old) and the step still succeeds; the Shield then shows its own illustrated scene for any tile without a picture.
+      - name: Build the daily genre tile pictures (TMDB)
+        continue-on-error: true
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: python genre_tiles.py
+
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
