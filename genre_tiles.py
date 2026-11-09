@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Daily GENRE TILE pictures for the Apex On Demand home/hub (Tony 2026-11-09, option B baked): seven darkened tile pictures plus a small list file, next to trending.json.
+"""Daily GENRE TILE pictures for the Apex On Demand home/hub (Tony 2026-11-09, option B baked): six darkened tile pictures plus a small list file, next to trending.json.
 
-For each of the seven genres (Action, Comedy, Drama, Sci-Fi, Thriller, Horror, Documentary) it looks at that genre's currently most popular movies on TMDB, takes a TEXTLESS backdrop (no title card or logo text),
+For each of six genres (Action, Comedy, Drama, Sci-Fi, Thriller, Horror; Documentary stays the skin's illustrated scene) it looks at that genre's currently most popular movies on TMDB, takes a TEXTLESS backdrop (no title card or logo text),
 checks that it reads as the genre (primary genre, no family/animation for the dark genres, brightness and colour rules per genre, a deny list), bakes it into a 392 x 220 tile picture (slightly desaturated, genre tint, darkened, dark
 bottom-left corner for the name, a little grain) and writes site/genre/<slug>.jpg plus site/genre.json. The Apex skin draws the genre NAME, the red underline and the focus lift itself, so nothing readable is baked in.
 This product uses the TMDB API but is not endorsed or certified by TMDB.
@@ -33,7 +33,7 @@ DENY = os.path.join(HERE, "genre_deny.txt")          # TMDB ids (one per line) o
 TILE = (392, 220)
 SAFE_PATH = re.compile(r"/[A-Za-z0-9_\-]{5,80}\.jpg")
 GENRES = [("Action", "action", 28, (142, 27, 27)), ("Comedy", "comedy", 35, (138, 90, 43)), ("Drama", "drama", 18, (93, 64, 55)), ("Sci-Fi", "scifi", 878, (18, 58, 107)),
-          ("Thriller", "thriller", 53, (38, 50, 56)), ("Horror", "horror", 27, (51, 64, 42)), ("Documentary", "documentary", 99, (154, 60, 23))]
+          ("Thriller", "thriller", 53, (38, 50, 56)), ("Horror", "horror", 27, (51, 64, 42))]  # Documentary is NOT live (Tony 2026-11-09): the skin always shows its illustrated scene for it
 ANIMATION, FAMILY = 16, 10751
 DARK_GENRES = {"horror", "thriller", "drama", "documentary", "action"}
 
