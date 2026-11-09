@@ -33,6 +33,15 @@ jobs:
       - name: Build channel list and 2-day guide
         run: python build.py
 
+      # Daily "trending" file for the Apex TV front door (On Demand tile): 4 movies + 4 shows from TMDB's day-trending lists.
+      # The key is read ONLY from the repository secret TMDB_API_KEY (never printed). Without the secret, or if TMDB can't be reached,
+      # nothing is written and this step still succeeds.
+      - name: Build the daily trending file (TMDB)
+        continue-on-error: true
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: python trending.py
+
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
