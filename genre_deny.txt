@@ -1,0 +1,1 @@
+# TMDB ids of titles whose backdrop misleads for their genre (one per line, comments after #): the daily genre job skips them and takes the next top title.
