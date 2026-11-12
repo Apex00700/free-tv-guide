@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Daily GENRE TILE pictures for the Apex On Demand home/hub (Tony 2026-11-09, option B baked): six darkened tile pictures plus a small list file, next to trending.json.
+"""Daily GENRE TILE pictures for the Apex On Demand home/hub (owner request 2026-11-09, option B baked): six darkened tile pictures plus a small list file, next to trending.json.
 
 For each of six genres (Action, Comedy, Drama, Sci-Fi, Thriller, Horror; Documentary stays the skin's illustrated scene) it looks at that genre's currently most popular movies on TMDB, takes a TEXTLESS backdrop (no title card or logo text),
 checks that it reads as the genre (primary genre, no family/animation for the dark genres, brightness and colour rules per genre, a deny list), bakes it into a 392 x 220 tile picture (slightly desaturated, genre tint, darkened, dark
@@ -33,7 +33,10 @@ DENY = os.path.join(HERE, "genre_deny.txt")          # TMDB ids (one per line) o
 TILE = (392, 220)
 SAFE_PATH = re.compile(r"/[A-Za-z0-9_\-]{5,80}\.jpg")
 GENRES = [("Action", "action", 28, (142, 27, 27)), ("Comedy", "comedy", 35, (138, 90, 43)), ("Drama", "drama", 18, (93, 64, 55)), ("Sci-Fi", "scifi", 878, (18, 58, 107)),
-          ("Thriller", "thriller", 53, (38, 50, 56)), ("Horror", "horror", 27, (51, 64, 42))]  # Documentary is NOT live (Tony 2026-11-09): the skin always shows its illustrated scene for it
+          ("Thriller", "thriller", 53, (38, 50, 56)), ("Horror", "horror", 27, (51, 64, 42)),
+          # 2026-11-12 (Tony T-192 #1 + T-233): the other tiles of the 10-tile row. Kids & Family, History, Science & Nature (= Documentary genre + TMDb keywords nature / wildlife / science, Tony Q4 (a)).
+          ("Kids & Family", "family", 10751, (176, 112, 38)), ("History", "history", 36, (112, 80, 48)),
+          ("Science & Nature", "nature", 99, (40, 96, 70), "18330|221355|9902|325892|287067")]  # Documentary itself is NOT live (owner request 2026-11-09): the skin always shows its illustrated scene for it
 ANIMATION, FAMILY = 16, 10751
 DARK_GENRES = {"horror", "thriller", "drama", "documentary", "action"}
 
@@ -114,7 +117,7 @@ def candidates(results, gid, slug, deny):
     out = []
     for r in results:
         ids = r.get("genre_ids") or []
-        if r.get("adult") or r.get("id") in deny or not ids or ids[0] != gid:
+        if r.get("adult") or r.get("id") in deny or not ids or (gid not in ids if slug == "family" else ids[0] != gid):
             continue
         if slug in DARK_GENRES and (ANIMATION in ids or FAMILY in ids):
             continue
@@ -154,9 +157,10 @@ def bake(im, tint, seed=7):
 
 
 def pick_for(genre, key, deny):
-    name, slug, gid, tint = genre
+    name, slug, gid, tint = genre[:4]
+    kw = ("&with_keywords=" + genre[4]) if len(genre) > 4 else ""
     since = (dt.date.today() - dt.timedelta(days=3 * 365)).isoformat()
-    res = send(f"/discover/movie?with_genres={gid}&sort_by=popularity.desc&vote_count.gte=300&primary_release_date.gte={since}&include_adult=false&language=en-US", key).get("results", [])
+    res = send(f"/discover/movie?with_genres={gid}{kw}&sort_by=popularity.desc&vote_count.gte=300&primary_release_date.gte={since}&include_adult=false&language=en-US", key).get("results", [])
     for r in candidates(res, gid, slug, deny)[:12]:
         try:
             imgs = send(f"/movie/{r['id']}/images?include_image_language=null", key)
@@ -195,6 +199,7 @@ def carry_forward(slug, name):
 
 
 def fake_tile(genre):
+    genre = genre[:4]
     name, slug, gid, tint = genre
     im = Image.new("RGB", (1280, 720), tuple(int(c * 0.6) for c in tint))
     d = ImageDraw.Draw(im)
