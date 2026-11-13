@@ -158,10 +158,12 @@ def bake(im, tint, seed=7):
 
 def pick_for(genre, key, deny):
     name, slug, gid, tint = genre[:4]
-    kw = ("&with_keywords=" + genre[4]) if len(genre) > 4 else ""
-    since = (dt.date.today() - dt.timedelta(days=3 * 365)).isoformat()
-    res = send(f"/discover/movie?with_genres={gid}{kw}&sort_by=popularity.desc&vote_count.gte=300&primary_release_date.gte={since}&include_adult=false&language=en-US", key).get("results", [])
-    for r in candidates(res, gid, slug, deny)[:12]:
+    kw = ("&with_keywords=" + genre[4].replace("|", "%7C")) if len(genre) > 4 else ""
+    nat = slug == "nature"                         # 2026-11-12: Science & Nature made NO tile on the first run: few nature documentaries are < 3 years old with >= 300 votes (measured: the real nature list's 20 pictures all pass the picture rules, so the discover filter was empty). Nature looks 12 years back with >= 100 votes.
+    since = (dt.date.today() - dt.timedelta(days=(12 if nat else 3) * 365)).isoformat()
+    votes = 100 if nat else 300
+    res = send(f"/discover/movie?with_genres={gid}{kw}&sort_by=popularity.desc&vote_count.gte={votes}&primary_release_date.gte={since}&include_adult=false&language=en-US", key).get("results", [])
+    for r in candidates(res, gid, slug, deny)[:(24 if nat else 12)]:
         try:
             imgs = send(f"/movie/{r['id']}/images?include_image_language=null", key)
             b = textless_backdrop(imgs)
